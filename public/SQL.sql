@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 2016-07-13 09:47:08
+-- Generation Time: 2016-07-13 11:05:54
 -- 服务器版本： 10.1.13-MariaDB
 -- PHP Version: 7.0.6
 
@@ -51,7 +51,7 @@ CREATE TABLE `lit_tradeinfo` (
   `onlinetime` char(22) NOT NULL COMMENT '在线时间',
   `tradingplace` char(100) NOT NULL COMMENT '交易地点',
   `tradetype` int(1) UNSIGNED NOT NULL COMMENT '交易类型0：出售1：收购',
-  `creattime` int(10) UNSIGNED NOT NULL COMMENT '交易创建时间'
+  `createtime` int(10) UNSIGNED NOT NULL COMMENT '交易创建时间'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --

@@ -23,7 +23,7 @@ return [
     // 应用模式状态
     'app_status'             => '',
     // 是否支持多模块
-    'app_multi_module'       => true,
+    'app_multi_module'       => false,
     // 注册的根命名空间
     'root_namespace'         => [],
     // 扩展配置文件

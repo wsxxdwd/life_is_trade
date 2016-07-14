@@ -18,39 +18,14 @@ class Api
 
     /**
      * 添加交易信息
-     * @param  str|int $_POST['title']]        标题
-     * @param  str|int $_POST['itemname']]     每页数量
-     * @param  str|int $_POST['itemnum']]      每页数量
-     * @param  str|int $_POST['itemprice']]    每页数量
-     * @param  str|int $_POST['itemquality']]  每页数量
-     * @param  str|int $_POST['trader']]       每页数量
-     * @param  str|int $_POST['onlinetime']]   每页数量
-     * @param  str|int $_POST['tradingplace']] 每页数量
-     * @param  str|int $_POST['tradetype']]    每页数量
      * @return json
      */
     public function addtradeinfo()
     {
         $TradeinfoModel = model('Tradeinfo');
-        if (isset($_POST['title']) &&
-            isset($_POST['itemname']) &&
-            isset($_POST['itemnum']) &&
-            isset($_POST['itemprice']) &&
-            isset($_POST['itemquality']) &&
-            isset($_POST['trader']) &&
-            isset($_POST['onlinetime']) &&
-            isset($_POST['tradingplace']) &&
-            isset($_POST['tradetype'])) {
-            // 过滤post数组中的非数据表字段数据并存入数据库
-            $TradeinfoModel->data($_POST);
-            $result = $TradeinfoModel->allowField(true)->save();
-        } else {
-            return json_encode([
-                'status' => '0',
-                'msg' => '传入参数错误'
-            ]);
-        }
-        // 判断石头添加成功
+        $TradeinfoModel->data($_POST);
+        // 过滤post数组中的非数据表字段数据并存入数据库
+        $result = $TradeinfoModel->allowField(true)->save();
         if ($result) {
             return json_encode([
                 'status' => '1',
@@ -66,9 +41,6 @@ class Api
 
     /**
      * 获取交易信息
-     * @param  string  $_GET['type']  交易类型 0,1,all
-     * @param  str|int $_GET['limit'] 每页数量
-     * @param  str|int $_GET['page']  页码
      * @return json
      */
     public function gettradeinfo()
@@ -102,27 +74,14 @@ class Api
 
     /**
      * 添加新闻
-     * @param  str|int $_POST['title']]         标题
-     * @param  str|int $_POST['creatusername']] 发表人
-     * @param  str|int $_POST['content']]       内容
      * @return json
      */
     public function addnew()
     {
-        $NewsModel = model('News');
-        if (isset($_POST['title']) &&
-            isset($_POST['creatusername']) &&
-            isset($_POST['content'])) {
-            // 过滤post数组中的非数据表字段数据并存入数据库
-            $NewsModel->data($_POST);
-            $result = $NewsModel->allowField(true)->save();
-        } else {
-            return json_encode([
-                'status' => '0',
-                'msg' => '传入参数错误'
-            ]);
-        }
-        // 判断是否成功添加
+        $NewsModel = model('New');
+        $NewsModel->data($_POST);
+        // 过滤post数组中的非数据表字段数据并存入数据库
+        $result = $NewsModel->allowField(true)->save();
         if ($result) {
             return json_encode([
                 'status' => '1',
@@ -138,8 +97,6 @@ class Api
 
     /**
      * 获取新闻
-     * @param  str|int $_GET['limit'] 每页数量
-     * @param  str|int $_GET['page']  页码
      * @return json
      */
     public function getnews()

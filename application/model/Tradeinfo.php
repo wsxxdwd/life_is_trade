@@ -9,4 +9,5 @@ class Tradeinfo extends Model
     protected $autoWriteTimestamp = true;
     // 设定时间戳的字段
     protected $createTime = 'createtime';
+    protected $updateTime = 'createtime';
 }

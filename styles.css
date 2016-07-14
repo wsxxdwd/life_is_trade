@@ -104,7 +104,7 @@ html, body {
 }
 .mdl-demo #add {
   position: absolute;
-  right: 40px;
+  left: 40px;
   top: 36px;
   z-index: 999;
 }
@@ -238,4 +238,11 @@ html, body {
 }
 .mdl-demo .mdl-menu__container {
   z-index: 99;
+}
+
+.mdl-textfield {
+  margin-left: 50px;
+}
+.mdl-radio {
+  margin-left: 30px;
 }

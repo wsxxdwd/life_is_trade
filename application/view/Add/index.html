@@ -1,0 +1,174 @@
+<!doctype html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="A front-end template that helps you build fast, modern mobile web apps.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <title>领地人生 发布信息</title>
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="icon" sizes="192x192" href="images/android-desktop.png">
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Material Design Lite">
+    <link rel="apple-touch-icon-precomposed" href="images/ios-desktop.png">
+    <!-- Tile icon for Win8 (144x144 + tile color) -->
+    <meta name="msapplication-TileImage" content="/img/touch/ms-touch-icon-144x144-precomposed.png">
+    <meta name="msapplication-TileColor" content="#3372DF">
+    <link rel="shortcut icon" href="/img/favicon.png">
+    <!-- SEO: If your mobile URL is different from the desktop URL, add a canonical link to the desktop page https://developers.google.com/webmasters/smartphone-sites/feature-phones -->
+    <!--
+    <link rel="canonical" href="http://www.example.com/">
+    -->
+    <link rel="stylesheet" href="https://fonts.lug.ustc.edu.cn/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+    <link rel="stylesheet" href="https://fonts.lug.ustc.edu.cn/icon?family=Material+Icons">
+    <link rel="stylesheet" href="/css/mdl.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+    #view-source {
+        position: fixed;
+        display: block;
+        right: 0;
+        bottom: 0;
+        margin-right: 40px;
+        margin-bottom: 40px;
+        z-index: 900;
+    }
+    </style>
+</head>
+
+<body class="mdl-demo mdl-color--grey-100 mdl-color-text--grey-700 mdl-base">
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <header class="mdl-layout__header mdl-layout__header--scroll mdl-color--primary">
+            <div class="mdl-layout--large-screen-only mdl-layout__header-row">
+            </div>
+            <div class="mdl-layout--large-screen-only mdl-layout__header-row">
+                <h3>领地人生 贸易公告板</h3>
+            </div>
+            <div class="mdl-layout--large-screen-only mdl-layout__header-row">
+            </div>
+            <div class="mdl-layout__tab-bar mdl-js-ripple-effect mdl-color--primary-dark">
+                <a class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored mdl-shadow--4dp mdl-color--accent" id="back" href="/">
+                    <i class="material-icons" role="presentation">keyboard_backspace</i>
+                    <span class="visuallyhidden">back</span>
+                </a>
+            </div>
+        </header>
+        <main class="mdl-layout__content">
+            <div class="mdl-layout__tab-panel is-active" id="publish">
+                <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
+                    <div class="mdl-card mdl-cell mdl-cell--12-col">
+                        <div class="mdl-card__supporting-text">
+                            <!-- Numeric Textfield with Floating Label -->
+                            <form action="#">
+                                <div class="mdl-grid">
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-cell--3-col">
+                                        <input class="mdl-textfield__input" type="text" id="poster">
+                                        <label class="mdl-textfield__label" for="poster">发布人</label>
+                                        <span class="mdl-textfield__error">必须填写</span>
+                                    </div>
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-cell--4-col">
+                                        <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sell">
+                                            <input type="radio" id="sell" class="mdl-radio__button" name="options" value="1" checked>
+                                            <span class="mdl-radio__label">卖</span>
+                                        </label>
+                                        <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="buy">
+                                            <input type="radio" id="buy" class="mdl-radio__button" name="options" value="2">
+                                            <span class="mdl-radio__label">买</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="mdl-grid">
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-cell--10-col">
+                                        <input class="mdl-textfield__input" type="text" id="title">
+                                        <label class="mdl-textfield__label" for="title">标题</label>
+                                        <span class="mdl-textfield__error">必须填写</span>
+                                    </div>
+                                </div>
+                                <div class="mdl-grid">
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-cell--10-col">
+                                        <input class="mdl-textfield__input" type="text" id="staff">
+                                        <label class="mdl-textfield__label" for="staff">物品</label>
+                                        <span class="mdl-textfield__error">必须填写</span>
+                                    </div>
+                                </div>
+                                <div class="mdl-grid">
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-cell--3-coll">
+                                        <input class="mdl-textfield__input" type="text" pattern="[0-9]{0,4}" id="quantity">
+                                        <label class="mdl-textfield__label" for="quantity">数量</label>
+                                        <span class="mdl-textfield__error">1~9999</span>
+                                    </div>
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-cell--3-col">
+                                        <input class="mdl-textfield__input" type="text" pattern="[0-9]{0,3}*" id="quality">
+                                        <label class="mdl-textfield__label" for="quality">品质</label>
+                                        <span class="mdl-textfield__error">1~100</span>
+                                    </div>
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-cell--3-col">
+                                        <input class="mdl-textfield__input" type="text" id="price">
+                                        <label class="mdl-textfield__label" for="price">价格</label>
+                                        <span class="mdl-textfield__error">必须填写，如：5J8Y200T</span>
+                                    </div>
+                                </div>
+                                <div class="mdl-grid">
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-cell--5-coll">
+                                        <input class="mdl-textfield__input" type="text" id="gameTime">
+                                        <label class="mdl-textfield__label" for="gameTime">在线时间</label>
+                                        <span class="mdl-textfield__error">必须填写,如：9:00~12:00</span>
+                                    </div>
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-cell--5-col">
+                                        <input class="mdl-textfield__input" type="text" id="tradePos">
+                                        <label class="mdl-textfield__label" for="tradePos">交易地点</label>
+                                        <span class="mdl-textfield__error">必须填写，如：湖东南角XXX领地</span>
+                                    </div>
+                                </div>
+                                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="publishBtn">
+                                    发 布
+                                </button>
+                            </form>
+                            <!-- Textfield with Floating Label -->
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <footer class="mdl-mega-footer">
+                <div class="mdl-mega-footer--bottom-section">
+                    <div class="mdl-logo">
+                        Powered By ---- Adivon Wong
+                    </div>
+                    <ul class="mdl-mega-footer--link-list">
+                        <li><a href="#">服务器qq群：</a></li>
+                        <li><a href="#">QT语音：</a></li>
+                    </ul>
+                </div>
+            </footer>
+        </main>
+        <div id="toast" class="mdl-js-snackbar mdl-snackbar">
+            <div class="mdl-snackbar__text"></div>
+            <button class="mdl-snackbar__action" type="button"></button>
+        </div>
+    </div>
+    <script src="/js/jquery.js"></script>
+    <script src="/js/mdl.js"></script>
+    <script src="/js/add.js"></script>
+</body>
+
+</html>

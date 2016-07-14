@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 2016-07-13 11:05:54
+-- Generation Time: 2016-07-14 03:48:10
 -- 服务器版本： 10.1.13-MariaDB
 -- PHP Version: 7.0.6
 
@@ -23,10 +23,10 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- 表的结构 `lit_new`
+-- 表的结构 `lit_news`
 --
 
-CREATE TABLE `lit_new` (
+CREATE TABLE `lit_news` (
   `nid` int(10) UNSIGNED NOT NULL COMMENT '新闻id',
   `creatusername` char(30) NOT NULL COMMENT '新闻发布人',
   `title` char(255) NOT NULL COMMENT '新闻标题',
@@ -59,9 +59,9 @@ CREATE TABLE `lit_tradeinfo` (
 --
 
 --
--- Indexes for table `lit_new`
+-- Indexes for table `lit_news`
 --
-ALTER TABLE `lit_new`
+ALTER TABLE `lit_news`
   ADD PRIMARY KEY (`nid`),
   ADD KEY `creatusername` (`creatusername`,`title`);
 
@@ -77,9 +77,9 @@ ALTER TABLE `lit_tradeinfo`
 --
 
 --
--- 使用表AUTO_INCREMENT `lit_new`
+-- 使用表AUTO_INCREMENT `lit_news`
 --
-ALTER TABLE `lit_new`
+ALTER TABLE `lit_news`
   MODIFY `nid` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '新闻id';
 --
 -- 使用表AUTO_INCREMENT `lit_tradeinfo`

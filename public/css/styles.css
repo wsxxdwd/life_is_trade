@@ -104,7 +104,7 @@ html, body {
 }
 .mdl-demo #add {
   position: absolute;
-  left: 40px;
+  right: 40px;
   top: 36px;
   z-index: 999;
 }

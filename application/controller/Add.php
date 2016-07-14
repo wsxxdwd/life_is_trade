@@ -3,7 +3,7 @@ namespace app\controller;
 
 use think\Controller;
 
-class Index extends Controller
+class Add extends Controller
 {
     public function index()
     {

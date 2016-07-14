@@ -50,7 +50,7 @@ class Api
                 'msg' => '传入参数错误'
             ]);
         }
-        // 判断石头添加成功
+        // 判断是否添加成功
         if ($result) {
             return json_encode([
                 'status' => '1',

@@ -10,10 +10,10 @@ class Api
      */
     public function index()
     {
-        return json_encode([
+        return [
             "owner" => "life_is_trade.com",
             "version" => "0.01.000"
-        ]);
+        ];
     }
 
     /**
@@ -45,22 +45,22 @@ class Api
             $TradeinfoModel->data($_POST);
             $result = $TradeinfoModel->allowField(true)->save();
         } else {
-            return json_encode([
-                'status' => '0',
-                'msg' => '传入参数错误'
-            ]);
+            return [
+                'status' => 0,
+                'msg' => 'Parameter error'
+            ];
         }
         // 判断是否添加成功
         if ($result) {
-            return json_encode([
-                'status' => '1',
-                'msg' => '成功发布交易信息'
-            ]);
+            return [
+                'status' => 1,
+                'msg' => 'Successful release'
+            ];
         } else {
-            return json_encode([
-                'status' => '0',
-                'msg' => '交易信息发布失败'
-            ]);
+            return [
+                'status' => 0,
+                'msg' => 'Release failure'
+            ];
         }
     }
 
@@ -76,27 +76,27 @@ class Api
         $TradeinfoModel = model('Tradeinfo');
         // 判断需要获取的类型并且过滤掉未定义的类型,如果是未定义的则为全部类型
         if (!isset($_GET['page']) || !isset($_GET['limit']) || !isset($_GET['type'])) {
-            return json_encode([
-                'status' => '0',
-                'msg' => '请传入正确的参数'
-            ]);
-        } else if ($_GET['type'] == '1' || $_GET['type'] == '0') {
+            return [
+                'status' => 0,
+                'msg' => 'Parameter error'
+            ];
+        } else if ($_GET['type'] == 1 || $_GET['type'] == 0) {
             $Tradeinfo = $TradeinfoModel->where('tradetype=' . $_GET['type'])->order('tid desc')->page($_GET['page'], $_GET['limit'])->select();
         } else {
             $Tradeinfo = $TradeinfoModel->order('tid desc')->page($_GET['page'], $_GET['limit'])->select();
         }
         // 判断是否成功获取
         if (is_array($Tradeinfo)) {
-            return json_encode([
-                'status' => '1',
-                'msg' => '成功获取交易信息',
+            return [
+                'status' => 1,
+                'msg' => 'Successful release',
                 'data' => $Tradeinfo
-            ]);
+            ];
         } else {
-            return json_encode([
-                'status' => '0',
-                'msg' => '交易信息获取失败'
-            ]);
+            return [
+                'status' => 0,
+                'msg' => 'Release failure'
+            ];
         }
     }
 
@@ -117,22 +117,22 @@ class Api
             $NewsModel->data($_POST);
             $result = $NewsModel->allowField(true)->save();
         } else {
-            return json_encode([
-                'status' => '0',
-                'msg' => '传入参数错误'
-            ]);
+            return [
+                'status' => 0,
+                'msg' => 'Parameter error'
+            ];
         }
         // 判断是否成功添加
         if ($result) {
-            return json_encode([
-                'status' => '1',
-                'msg' => '成功发布新闻'
-            ]);
+            return [
+                'status' => 1,
+                'msg' => 'Successful release'
+            ];
         } else {
-            return json_encode([
-                'status' => '0',
-                'msg' => '新闻发布失败'
-            ]);
+            return [
+                'status' => 0,
+                'msg' => 'Release failure'
+            ];
         }
     }
 
@@ -148,23 +148,23 @@ class Api
         if (isset($_GET['page']) && isset($_GET['limit'])) {
             $News = $NewsModel->order('nid desc')->page($_GET['page'], $_GET['limit'])->select();
         } else {
-            return json_encode([
-                'status' => '0',
-                'msg' => '请传入正确的参数'
-            ]);
+            return [
+                'status' => 0,
+                'msg' => 'Parameter error'
+            ];
         }
         // 判断是否成功获取
         if (is_array($News)) {
-            return json_encode([
-                'status' => '1',
-                'msg' => '成功获取新闻',
+            return [
+                'status' => 1,
+                'msg' => 'Successful release',
                 'data' => $News
-            ]);
+            ];
         } else {
-            return json_encode([
-                'status' => '0',
-                'msg' => '新闻获取失败'
-            ]);
+            return [
+                'status' => 0,
+                'msg' => 'Release failure'
+            ];
         }
     }
 

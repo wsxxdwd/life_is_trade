@@ -5,7 +5,7 @@ $(document).ready(function() {
         var dataError = false;
 
         var poster = $('#poster').val();
-        if(poster == '') {
+        if (poster == '') {
             $('#poster').parent().addClass('is-invalid');
             dataError = true;
         }
@@ -13,28 +13,30 @@ $(document).ready(function() {
         var type = $('[name="type"]').val();
 
         var title = $('#title').val();
-        if(title == '') {
+        if (title == '') {
             $('#title').parent().addClass('is-invalid');
             dataError = true;
         }
 
         var staff = $('#staff').val();
-        if(staff == '' ||
+        if (staff == '' ||
             staff.length > 255) {
             $('#staff').parent().addClass('is-invalid');
             dataError = true;
         }
 
         var quantity = $('#quantity').val();
-        if(quantity == '' ||
+        if (quantity == '' ||
+            isNaN(quantity * 1) ||
             quantity > 9999 ||
-            qiamtity < 0) {
+            quantity < 0) {
             $('#quantity').parent().addClass('is-invalid');
             dataError = true;
         }
 
         var quality = $('#quality').val();
-        if(quality == '' ||
+        if (quality == '' ||
+            isNaN(quality * 1) ||
             quality > 100 ||
             quality < 0) {
             $('#quality').parent().addClass('is-invalid');
@@ -42,35 +44,57 @@ $(document).ready(function() {
         }
 
         var price = $('#quality').val();
-        if(price == '') {
+        if (price == '') {
             $('#price').parent().addClass('is-invalid');
             dataError = true;
         }
 
         var gameTime = $('#gameTime').val();
-        if(gameTime == '') {
+        if (gameTime == '') {
             $('#gameTime').parent().addClass('is-invalid');
             dataError = true;
         }
 
         var tradePos = $('#tradePos').val();
-        if(tradePos == '') {
+        if (tradePos == '') {
             $('#tradePos').parent().addClass('is-invalid');
             dataError = true;
         }
-        var data = {
-            title: title,
-            itemname: staff,
-            itemnum: quantity,
-            itemprice: price,
-            itemquality: quality,
-            trader: poster,
-            onlinetime: gameTime,
-            tradingplace: tradePos
+        if (dataError) {
+            var msg = { message: '请完善信息' };
+            snackbarContainer.MaterialSnackbar.showSnackbar(msg);
+            return false;
+        } else {
+            var data = {
+                title: title,
+                itemname: staff,
+                itemnum: quantity,
+                itemprice: price,
+                itemquality: quality,
+                trader: poster,
+                onlinetime: gameTime,
+                tradingplace: tradePos
+            }
+            console.log(data);
+            $.ajax({
+                type: 'post',
+                data: data,
+                url: '/api/addtradeinfo',
+                dataType: 'json',
+                success: function(res) {
+                    if (res.status === 1) {
+                        var msg = { message: '发布成功' };
+                    } else {
+                        var msg = { message: '发布失败' };
+                    }
+                    snackbarContainer.MaterialSnackbar.showSnackbar(msg);
+                },
+                error: function(err) {
+                    var msg = { message: '发布失败' };
+                    snackbarContainer.MaterialSnackbar.showSnackbar(msg);
+                }
+            })
         }
-        console.log(data);
 
-        var msg = {message: '保存成功'};
-        snackbarContainer.MaterialSnackbar.showSnackbar(msg);
     })
 });

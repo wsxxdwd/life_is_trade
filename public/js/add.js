@@ -10,7 +10,7 @@ $(document).ready(function() {
             dataError = true;
         }
 
-        var type = $('[name="type"]').val();
+        var type = $('[name="type"]:checked').val();
 
         var title = $('#title').val();
         if (title == '') {
@@ -67,10 +67,11 @@ $(document).ready(function() {
         } else {
             var data = {
                 title: title,
+                tradetype: type * 1,
                 itemname: staff,
-                itemnum: quantity,
+                itemnum: quantity * 1,
                 itemprice: price,
-                itemquality: quality,
+                itemquality: quality * 1,
                 trader: poster,
                 onlinetime: gameTime,
                 tradingplace: tradePos

@@ -18,15 +18,15 @@ class Api
 
     /**
      * 添加交易信息
-     * @param  str|int $_POST['title']]        标题
-     * @param  str|int $_POST['itemname']]     每页数量
-     * @param  str|int $_POST['itemnum']]      每页数量
-     * @param  str|int $_POST['itemprice']]    每页数量
-     * @param  str|int $_POST['itemquality']]  每页数量
-     * @param  str|int $_POST['trader']]       每页数量
-     * @param  str|int $_POST['onlinetime']]   每页数量
-     * @param  str|int $_POST['tradingplace']] 每页数量
-     * @param  str|int $_POST['tradetype']]    每页数量
+     * @param  str|int $_POST['title']        标题
+     * @param  str|int $_POST['itemname']     物品名称
+     * @param  str|int $_POST['itemnum']      物品数量
+     * @param  str|int $_POST['itemprice']    物品单价
+     * @param  str|int $_POST['itemquality']  物品质量
+     * @param  str|int $_POST['trader']       交易发起人
+     * @param  str|int $_POST['onlinetime']   在线时间
+     * @param  str|int $_POST['tradingplace'] 交易地点
+     * @param  str|int $_POST['tradetype']    交易类型
      * @return json
      */
     public function addtradeinfo()
@@ -102,9 +102,9 @@ class Api
 
     /**
      * 添加新闻
-     * @param  str|int $_POST['title']]         标题
-     * @param  str|int $_POST['creatusername']] 发表人
-     * @param  str|int $_POST['content']]       内容
+     * @param  str|int $_POST['title']         标题
+     * @param  str|int $_POST['creatusername'] 发表人
+     * @param  str|int $_POST['content']       内容
      * @return json
      */
     public function addnew()

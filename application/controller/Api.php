@@ -47,17 +47,22 @@ class Api
     {
         $TradeinfoModel = model('Tradeinfo');
         // 判断需要获取的类型并且过滤掉未定义的类型,如果是未定义的则为全部类型
-        if ($_GET['type'] == '1' || $_GET['type'] == '0') {
-            $result = $TradeinfoModel->where('type=' . $_GET['type'])->page($_GET['page'], $_GET['limit'])->select();
+        if (!isset($_GET['page']) || !isset($_GET['limit']) || !isset($_GET['type'])) {
+            return json_encode([
+                'status' => '0',
+                'msg' => '请传入正确的参数'
+            ]);
+        } else if ($_GET['type'] == '1' || $_GET['type'] == '0') {
+            $Tradeinfo = $TradeinfoModel->where('tradetype=' . $_GET['type'])->order('tid desc')->page($_GET['page'], $_GET['limit'])->select();
         } else {
-            $result = $TradeinfoModel->page($_GET['page'], $_GET['limit'])->select();
+            $Tradeinfo = $TradeinfoModel->order('tid desc')->page($_GET['page'], $_GET['limit'])->select();
         }
         // 判断是否成功获取
-        if ($result) {
+        if (is_array($Tradeinfo)) {
             return json_encode([
                 'status' => '1',
                 'msg' => '成功获取交易信息',
-                'data' => $result
+                'data' => $Tradeinfo
             ]);
         } else {
             return json_encode([
@@ -73,10 +78,10 @@ class Api
      */
     public function addnew()
     {
-        $NewModel = model('New');
-        $NewModel->data($_POST);
+        $NewsModel = model('New');
+        $NewsModel->data($_POST);
         // 过滤post数组中的非数据表字段数据并存入数据库
-        $result = $NewModel->allowField(true)->save();
+        $result = $NewsModel->allowField(true)->save();
         if ($result) {
             return json_encode([
                 'status' => '1',
@@ -96,14 +101,21 @@ class Api
      */
     public function getnews()
     {
-        $NewModel = model('New');
-        $result = $NewModel->page($_GET['page'], $_GET['limit'])->select();
+        $NewsModel = model('News');
+        if (isset($_GET['page']) && isset($_GET['limit'])) {
+            $News = $NewsModel->order('nid desc')->page($_GET['page'], $_GET['limit'])->select();
+        } else {
+            return json_encode([
+                'status' => '0',
+                'msg' => '请传入正确的参数'
+            ]);
+        }
         // 判断是否成功获取
-        if ($result) {
+        if (is_array($News)) {
             return json_encode([
                 'status' => '1',
                 'msg' => '成功获取新闻',
-                'data' => $result
+                'data' => $News
             ]);
         } else {
             return json_encode([

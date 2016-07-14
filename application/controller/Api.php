@@ -47,19 +47,19 @@ class Api
         } else {
             return [
                 'status' => 0,
-                'msg' => 'Parameter error'
+                'msg' => '传入参数错误'
             ];
         }
         // 判断是否添加成功
         if ($result) {
             return [
                 'status' => 1,
-                'msg' => 'Successful release'
+                'msg' => '交易信息发布成功'
             ];
         } else {
             return [
                 'status' => 0,
-                'msg' => 'Release failure'
+                'msg' => '交易信息发布失败'
             ];
         }
     }
@@ -78,7 +78,7 @@ class Api
         if (!isset($_GET['page']) || !isset($_GET['limit']) || !isset($_GET['type'])) {
             return [
                 'status' => 0,
-                'msg' => 'Parameter error'
+                'msg' => '传入参数错误'
             ];
         } else if ($_GET['type'] == 1 || $_GET['type'] == 0) {
             $Tradeinfo = $TradeinfoModel->where('tradetype=' . $_GET['type'])->order('tid desc')->page($_GET['page'], $_GET['limit'])->select();
@@ -89,13 +89,13 @@ class Api
         if (is_array($Tradeinfo)) {
             return [
                 'status' => 1,
-                'msg' => 'Successful release',
+                'msg' => '成功获取交易信息',
                 'data' => $Tradeinfo
             ];
         } else {
             return [
                 'status' => 0,
-                'msg' => 'Release failure'
+                'msg' => '交易信息获取失败'
             ];
         }
     }
@@ -119,19 +119,19 @@ class Api
         } else {
             return [
                 'status' => 0,
-                'msg' => 'Parameter error'
+                'msg' => '传入参数错误'
             ];
         }
         // 判断是否成功添加
         if ($result) {
             return [
                 'status' => 1,
-                'msg' => 'Successful release'
+                'msg' => '新闻发布成功'
             ];
         } else {
             return [
                 'status' => 0,
-                'msg' => 'Release failure'
+                'msg' => '新闻发布失败'
             ];
         }
     }
@@ -150,20 +150,20 @@ class Api
         } else {
             return [
                 'status' => 0,
-                'msg' => 'Parameter error'
+                'msg' => '传入参数错误'
             ];
         }
         // 判断是否成功获取
         if (is_array($News)) {
             return [
                 'status' => 1,
-                'msg' => 'Successful release',
+                'msg' => '成功获取新闻',
                 'data' => $News
             ];
         } else {
             return [
                 'status' => 0,
-                'msg' => 'Release failure'
+                'msg' => '新闻获取失败'
             ];
         }
     }

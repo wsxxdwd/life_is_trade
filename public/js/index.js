@@ -2,19 +2,21 @@ $(document).ready(function() {
     var snackbarContainer = document.querySelector('#toast');
     getInfoList('sell');
     getInfoList('buy');
+    getInfoList('news');
 
     var isloading = false;
 
-    $(window).on("scroll", function() {
-        var scrollTop = $(this).scrollTop();
-        var pageHeight = $(document).height();
-        if (scrollTop > (pageHeight - 200)) {
+    $('main').scroll(throttle(function() {
+        var scrollTop = $('main').scrollTop() + $(window).height();
+        var pageHeight = $('.mdl-layout__tab-panel.is-active').height();
+        console.log(scrollTop, pageHeight)
+        if (scrollTop > (pageHeight - 100)) {
             if (!isloading) {
                 var type = $('.mdl-layout__tab-panel.is-active').attr('id');
                 getInfoList(type);
             }
         }
-    });
+    }, 300, this));
 
     function getInfoList(type) {
         var lastid = $('.is-active section').last().length ? $('.is-active section').last().data('id') : false;
@@ -24,7 +26,7 @@ $(document).ready(function() {
                 type: 'get',
                 url: '/api/gettradeinfo',
                 data: {
-                    type: 1,
+                    type: 0,
                     lastid: lastid,
                     limit: 10
                 },
@@ -52,7 +54,7 @@ $(document).ready(function() {
                 type: 'get',
                 url: '/api/gettradeinfo',
                 data: {
-                    type: 2,
+                    type: 1,
                     lastid: lastid,
                     limit: 10
                 },
@@ -152,4 +154,18 @@ $(document).ready(function() {
         ].join('');
         return tr;
     }
+
+    function throttle(method, delay, context) {
+        var timer = null;
+        var context = context ? context : this,
+            args = arguments;
+        return function() {
+            clearTimeout(timer);
+            timer = setTimeout(function() {
+                method.apply(context, args);
+            }, delay);
+        }
+
+    }
+
 });

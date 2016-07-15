@@ -113,20 +113,35 @@ class Api
     {
         $TradeinfoModel = model('Tradeinfo');
         // 判断需要获取的类型并且过滤掉未定义的类型,如果是未定义的则为全部类型
-        if (!isset($_GET['page']) || !isset($_GET['limit']) || !isset($_GET['type'])) {
+        if (!isset($_GET['lastid']) || !isset($_GET['limit']) || !isset($_GET['type'])) {
             return [
                 'status' => 0,
                 'msg' => '传入参数错误'
             ];
-        } else if ($_GET['type'] == 1 || $_GET['type'] == 0) {
-            $Tradeinfo = $TradeinfoModel->where('tradetype=' . $_GET['type'])->order('tid desc')->page($_GET['page'], $_GET['limit'])->select();
+        }
+        // 查询
+        /*$_GET['lastid'] = (bool)$_GET['lastid'];
+        var_dump($_GET['lastid']);*/
+        if ($_GET['lastid'] == 'false') {
+            $_GET['lastid'] = false;
+        }
+        if ($_GET['lastid'] && ($_GET['type'] == 1 || $_GET['type'] == 0)) {
+            $dm['tid'] = ['<', $_GET['lastid']];
+            $dm['tradetype'] = $_GET['type'];
+            $Tradeinfo = $TradeinfoModel->where($dm)->order('tid desc')->limit($_GET['limit'])->select();
+        } elseif ($_GET['type'] == 1 || $_GET['type'] == 0) {
+            $dm['tradetype'] = $_GET['type'];
+            $Tradeinfo = $TradeinfoModel->where($dm)->order('tid desc')->limit($_GET['limit'])->select();
+        } elseif ($_GET['lastid']) {
+            $dm['tid'] = ['<', $_GET['lastid']];
+            $Tradeinfo = $TradeinfoModel->where($dm)->order('tid desc')->limit($_GET['limit'])->select();
         } else {
-            $Tradeinfo = $TradeinfoModel->order('tid desc')->page($_GET['page'], $_GET['limit'])->select();
+            $Tradeinfo = $TradeinfoModel->order('tid desc')->limit($_GET['limit'])->select();
         }
         // 获取物品列表
         foreach ($Tradeinfo as $key => $data) {
             $TradeiteminfoModel = model('Tradeiteminfo');
-            $Tradeinfo[$key]['items'] = $TradeiteminfoModel->where('tid=' . $data['tid'])->order('iid esc')->select();
+            $Tradeinfo[$key]['items'] = $TradeiteminfoModel->where('tid=' . $data['tid'])->order('iid')->select();
         }
         // 判断是否成功获取
         if (is_array($Tradeinfo)) {

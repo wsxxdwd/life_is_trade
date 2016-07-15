@@ -1,8 +1,14 @@
 <?php
 namespace app\controller;
 
+use think\Validate;
+
 class Api
 {
+
+    public function __construct() {
+        
+    }
     
     /**
      * 查看API版本号:)装个逼而已23333
@@ -41,6 +47,14 @@ class Api
             isset($_POST['onlinetime']) &&
             isset($_POST['tradingplace']) &&
             isset($_POST['tradetype'])) {
+            // 验证是否符合要求
+            $TradeinfoValidate = validate('Tradeinfo');
+            if (!$TradeinfoValidate->check($_POST)) {
+                return [
+                    'status' => 0,
+                    'msg' => $TradeinfoValidate->getError()
+                ];
+            }
             // 过滤post数组中的非数据表字段数据并存入数据库
             $TradeinfoModel->data($_POST);
             $result = $TradeinfoModel->allowField(true)->save();
@@ -113,6 +127,14 @@ class Api
         if (isset($_POST['title']) &&
             isset($_POST['creatusername']) &&
             isset($_POST['content'])) {
+            // 验证是否符合要求
+            $NewsValidate = validate('News');
+            if (!$NewsValidate->check($_POST)) {
+                return [
+                    'status' => 0,
+                    'msg' => $NewsValidate->getError()
+                ];
+            }
             // 过滤post数组中的非数据表字段数据并存入数据库
             $NewsModel->data($_POST);
             $result = $NewsModel->allowField(true)->save();

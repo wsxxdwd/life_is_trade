@@ -31,9 +31,6 @@ html, body {
 .mdl-demo .mdl-layout__tab-bar-button {
   display: none;
 }
-.mdl-demo .mdl-layout.is-small-screen .mdl-layout__tab-bar .mdl-button {
-  display: none;
-}
 .mdl-demo .mdl-layout:not(.is-small-screen) .mdl-layout__tab-bar,
 .mdl-demo .mdl-layout:not(.is-small-screen) .mdl-layout__tab-bar-container {
   overflow: visible;
@@ -259,4 +256,8 @@ input[type="text"] {
   float: right;
   margin-top: 30px;
   width: 150px;
+}
+
+.mdl-demo .mdl-layout.is-small-screen .mdl-layout__tab-bar .mdl-button {
+  top: 5px!important;
 }

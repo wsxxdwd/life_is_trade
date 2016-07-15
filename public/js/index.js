@@ -1,9 +1,9 @@
 $(document).ready(function() {
     var snackbarContainer = document.querySelector('#toast');
-    getInfoList(1, 'sell');
-    getInfoList(1, 'buy');
+    getInfoList('sell');
+    getInfoList('buy');
 
-    var isloading = false,
+    var isloading = false;
 
     $(window).on("scroll", function() {
         var scrollTop = $(this).scrollTop();
@@ -18,8 +18,8 @@ $(document).ready(function() {
 
     function getInfoList(type) {
         var lastid = $('.is-active section').last().length ? $('.is-active section').last().data('id') : false;
-        isloading = true;
         if (type === 'sell') {
+            isloading = true;
             $.ajax({
                 type: 'get',
                 url: '/api/gettradeinfo',
@@ -47,11 +47,39 @@ $(document).ready(function() {
                 }
             });
         } else if (type === 'buy') {
+            isloading = true;
             $.ajax({
                 type: 'get',
                 url: '/api/gettradeinfo',
                 data: {
                     type: 2,
+                    lastid: lastid,
+                    limit: 10
+                },
+                dataType: 'json',
+                success: function(res) {
+                    isloading = false;
+                    if (res.status == 1) {
+                        renderPage($('#buy'), res.data);
+                    } else {
+                        var msg = { message: '获取失败' };
+                        snackbarContainer.MaterialSnackbar.showSnackbar(msg);
+
+                    }
+                },
+                error: function(err) {
+                    isloading = false;
+                    var msg = { message: '获取失败' };
+                    snackbarContainer.MaterialSnackbar.showSnackbar(msg);
+                    console.log(err);
+                }
+            });
+        } else if (type === 'news') {
+            isloading = true;
+            $.ajax({
+                type: 'get',
+                url: '/api/getnews',
+                data: {
                     lastid: lastid,
                     limit: 10
                 },

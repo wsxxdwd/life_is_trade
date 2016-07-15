@@ -78,102 +78,9 @@
         </header>
         <main class="mdl-layout__content">
             <div class="mdl-layout__tab-panel is-active" id="sell">
-                <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
-                    <div class="mdl-card mdl-cell mdl-cell--12-col">
-                        <div class="mdl-card__supporting-text">
-                            <h4>自由港贸易站 -- 西海岸藏宝湾</h4>
-                            <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
-                                <thead>
-                                    <tr>
-                                        <th class="mdl-data-table__cell--non-numeric">物品</th>
-                                        <th>数量</th>
-                                        <th>质量</th>
-                                        <th>价格</th>
-                                        <th>交易者</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="mdl-data-table__cell--non-numeric">亚麻绳</td>
-                                        <td>无限</td>
-                                        <td>85+</td>
-                                        <td>20Y</td>
-                                        <td>Adivon Wong</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="mdl-data-table__cell--non-numeric">7.5幸运首饰一套</td>
-                                        <td>2</td>
-                                        <td>100</td>
-                                        <td>1J500Y</td>
-                                        <td>Adivon Wong</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="mdl-data-table__cell--non-numeric">铁锭</td>
-                                        <td>无限</td>
-                                        <td>35</td>
-                                        <td>50Y</td>
-                                        <td>Adivon Wong</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <h6>交易地点： 送货上门，或者西海岸自取</h6>
-                            <h6>在线时间： 11:30-13:00</h6>
-                        </div>
-                    </div>
-                </section>
-               
             </div>
             <div class="mdl-layout__tab-panel" id="buy">
-                <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
-                    <div class="mdl-card mdl-cell mdl-cell--12-col">
-                        <div class="mdl-card__supporting-text">
-                            <h4>新人发展资源采购</h4>
-                            <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
-                                <thead>
-                                    <tr>
-                                        <th class="mdl-data-table__cell--non-numeric">物品</th>
-                                        <th>数量</th>
-                                        <th>质量</th>
-                                        <th>价格</th>
-                                        <th>交易者</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="mdl-data-table__cell--non-numeric">亚麻绳</td>
-                                        <td>10</td>
-                                        <td>无要求</td>
-                                        <td>15Y</td>
-                                        <td>Adivon Wong</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="mdl-data-table__cell--non-numeric">铁质工具一套</td>
-                                        <td>2</td>
-                                        <td>80+</td>
-                                        <td>200Y</td>
-                                        <td>Adivon Wong</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="mdl-data-table__cell--non-numeric">铁锭</td>
-                                        <td>100</td>
-                                        <td>50+</td>
-                                        <td>50Y</td>
-                                        <td>Adivon Wong</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <h6>交易地点： 上门自取</h6>
-                        </div>
-                    </div>
-                    <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" id="btn3">
-                        <i class="material-icons">more_vert</i>
-                    </button>
-                    <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right" for="btn3">
-                        <li class="mdl-menu__item">Lorem</li>
-                        <li class="mdl-menu__item" disabled>Ipsum</li>
-                        <li class="mdl-menu__item">Dolor</li>
-                    </ul>
-                </section>
+
             </div>
             <div class="mdl-layout__tab-panel" id="news">
                 <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
@@ -189,9 +96,13 @@
             </div>
             {include file="./templet/footer.html"/}
         </main>
+        <div id="toast" class="mdl-js-snackbar mdl-snackbar">
+            <div class="mdl-snackbar__text"></div>
+            <button class="mdl-snackbar__action" type="button"></button>
+        </div>
     </div>
-    <script src="/js/mdl.js"></script>
     <script src="/js/jquery.js"></script>
+    <script src="/js/mdl.js"></script>
     <script src="/js/index.js"></script>
 </body>
 

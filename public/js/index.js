@@ -135,7 +135,7 @@ $(document).ready(function() {
                 '</div>',
                 '</div>',
                 '</section>'
-            ];
+            ].join('');
             page.append(html);
         }
         componentHandler.upgradeDom();
@@ -144,10 +144,10 @@ $(document).ready(function() {
     function makeTable(data) {
         var tr = [
             '<tr>',
-            '<td class="mdl-data-table__cell--non-numeric">', data.staff, '</td>',
+            '<td class="mdl-data-table__cell--non-numeric">', data.itemname, '</td>',
             '<td>', data.itemnum, '</td>',
-            '<td>', data.quality, '</td>',
-            '<td>', data.price, '</td>',
+            '<td>', data.itemprice, '</td>',
+            '<td>', data.itemquality, '</td>',
             '</tr>'
         ].join('');
         return tr;

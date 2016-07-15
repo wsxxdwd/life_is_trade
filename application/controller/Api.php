@@ -103,9 +103,10 @@ class Api
 
     /**
      * 获取交易信息
-     * @param  str|int $_GET['type']   交易类型 0,1,all
-     * @param  str|int $_GET['limit']  每页数量
-     * @param  str|int $_GET['lastid'] 最后获取的ID，相对于前端
+     * @param  str|int  $_GET['type']   交易类型 0,1,all
+     * @param  str|int  $_GET['limit']  每页数量
+     * @param  str|int  $_GET['lastid'] 最后获取的ID，相对于前端
+     * @param  str|bool $_GET['isnew']  是否为下拉刷新
      * @return json
      */
     public function gettradeinfo()
@@ -117,20 +118,29 @@ class Api
                 'msg' => '传入参数错误'
             ];
         }
+        if (isset($_GET['isnew'])) {
+            if ($_GET['isnew'] = 'false' || $_GET['isnew'] = false) {
+                $exp = '<';
+            } else {
+                $exp = '>';
+            }
+        } else {
+            $exp = '<';
+        }
         // 获取交易信息列表
         $TradeinfoModel = model('Tradeinfo');
         if ($_GET['lastid'] == 'false') {
             $_GET['lastid'] = false;
         }
         if ($_GET['lastid'] && ($_GET['type'] == 1 || $_GET['type'] == 0)) {
-            $dm['tid'] = ['<', $_GET['lastid']];
+            $dm['tid'] = [$exp, $_GET['lastid']];
             $dm['tradetype'] = $_GET['type'];
             $Tradeinfo = $TradeinfoModel->where($dm)->order('tid desc')->limit($_GET['limit'])->select();
         } elseif ($_GET['type'] == 1 || $_GET['type'] == 0) {
             $dm['tradetype'] = $_GET['type'];
             $Tradeinfo = $TradeinfoModel->where($dm)->order('tid desc')->limit($_GET['limit'])->select();
         } elseif ($_GET['lastid']) {
-            $dm['tid'] = ['<', $_GET['lastid']];
+            $dm['tid'] = [$exp, $_GET['lastid']];
             $Tradeinfo = $TradeinfoModel->where($dm)->order('tid desc')->limit($_GET['limit'])->select();
         } else {
             $Tradeinfo = $TradeinfoModel->order('tid desc')->limit($_GET['limit'])->select();

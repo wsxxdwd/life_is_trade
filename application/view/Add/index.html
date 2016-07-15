@@ -81,12 +81,12 @@
                             <!-- Numeric Textfield with Floating Label -->
                             <form action="#">
                                 <div class="mdl-grid">
-                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-cell--3-col">
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-cell--3-col mdl-cell">
                                         <input class="mdl-textfield__input" type="text" id="poster">
                                         <label class="mdl-textfield__label" for="poster">发布人</label>
                                         <span class="mdl-textfield__error">必须填写</span>
                                     </div>
-                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-cell--4-col">
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-cell--4-col mdl-cell">
                                         <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sell">
                                             <input type="radio" id="sell" class="mdl-radio__button" name="type" value="0" checked>
                                             <span class="mdl-radio__label">卖</span>
@@ -98,49 +98,52 @@
                                     </div>
                                 </div>
                                 <div class="mdl-grid">
-                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-cell--10-col">
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-cell--12-col mdl-cell">
                                         <input class="mdl-textfield__input" type="text" id="title">
                                         <label class="mdl-textfield__label" for="title">标题</label>
                                         <span class="mdl-textfield__error">必须填写</span>
                                     </div>
                                 </div>
-                                <div class="mdl-grid">
-                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-cell--10-col">
-                                        <input class="mdl-textfield__input" type="text" id="staff">
-                                        <label class="mdl-textfield__label" for="staff">物品</label>
-                                        <span class="mdl-textfield__error">必须填写</span>
+                                <div class="item-list">
+                                    <div class="mdl-grid item" data-index='0'>
+                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-cell--3-col mdl-cell">
+                                            <input class="mdl-textfield__input staff" type="text">
+                                            <label class="mdl-textfield__label" for="staff">物品</label>
+                                            <span class="mdl-textfield__error">必须填写</span>
+                                        </div>
+                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-cell--3-col mdl-cell">
+                                            <input class="mdl-textfield__input quantity" type="text" pattern="[0-9]{0,4}">
+                                            <label class="mdl-textfield__label" for="quantity">数量</label>
+                                            <span class="mdl-textfield__error">1~9999</span>
+                                        </div>
+                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-cell--2-col mdl-cell">
+                                            <input class="mdl-textfield__input quality" type="text" pattern="[0-9]{0,3}">
+                                            <label class="mdl-textfield__label" for="quality">品质</label>
+                                            <span class="mdl-textfield__error">1~100</span>
+                                        </div>
+                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-cell--2-col mdl-cell">
+                                            <input class="mdl-textfield__input price" type="text">
+                                            <label class="mdl-textfield__label" for="price">价格</label>
+                                            <span class="mdl-textfield__error">必须填写，如：5J8Y200T</span>
+                                        </div>
                                     </div>
                                 </div>
+                                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-cell--1-col mdl-cell" id="addItemBtn">
+                                    新 增
+                                </button>
                                 <div class="mdl-grid">
-                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-cell--3-coll">
-                                        <input class="mdl-textfield__input" type="text" pattern="[0-9]{0,4}" id="quantity">
-                                        <label class="mdl-textfield__label" for="quantity">数量</label>
-                                        <span class="mdl-textfield__error">1~9999</span>
-                                    </div>
-                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-cell--3-col">
-                                        <input class="mdl-textfield__input" type="text" pattern="[0-9]{0,3}" id="quality">
-                                        <label class="mdl-textfield__label" for="quality">品质</label>
-                                        <span class="mdl-textfield__error">1~100</span>
-                                    </div>
-                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-cell--3-col">
-                                        <input class="mdl-textfield__input" type="text" id="price">
-                                        <label class="mdl-textfield__label" for="price">价格</label>
-                                        <span class="mdl-textfield__error">必须填写，如：5J8Y200T</span>
-                                    </div>
-                                </div>
-                                <div class="mdl-grid">
-                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-cell--5-coll">
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-cell--6-col mdl-cell">
                                         <input class="mdl-textfield__input" type="text" id="gameTime">
                                         <label class="mdl-textfield__label" for="gameTime">在线时间</label>
                                         <span class="mdl-textfield__error">必须填写,如：9:00~12:00</span>
                                     </div>
-                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-cell--5-col">
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-cell--6-col mdl-cell">
                                         <input class="mdl-textfield__input" type="text" id="tradePos">
                                         <label class="mdl-textfield__label" for="tradePos">交易地点</label>
                                         <span class="mdl-textfield__error">必须填写，如：湖东南角XXX领地</span>
                                     </div>
                                 </div>
-                                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="publishBtn">
+                                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent mdl-cell" id="publishBtn">
                                     发 布
                                 </button>
                             </form>

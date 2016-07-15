@@ -244,15 +244,19 @@ html, body {
 .mdl-demo .mdl-menu__container {
   z-index: 99;
 }
-
-.mdl-textfield {
-  margin-left: 50px;
+input[type="text"] {
+  width: 95%;
+  padding-right: 5%;
 }
 .mdl-radio {
-  margin-left: 30px;
+  margin-left: 50px;
 }
 #publishBtn {
-  margin-left: 50px;
+  margin-top: 30px;
+  width: 150px;
+}
+#addItem {
+  float: right;
   margin-top: 30px;
   width: 150px;
 }

@@ -9,7 +9,6 @@ $(document).ready(function() {
     $('main').scroll(throttle(function() {
         var scrollTop = $('main').scrollTop() + $(window).height();
         var pageHeight = $('.mdl-layout__tab-panel.is-active').height();
-        console.log(scrollTop, pageHeight)
         if (scrollTop > (pageHeight - 100)) {
             if (!isloading) {
                 var type = $('.mdl-layout__tab-panel.is-active').attr('id');
@@ -143,6 +142,15 @@ $(document).ready(function() {
         componentHandler.upgradeDom();
     }
 
+    function renderNews(data) {
+        for (var i in data) {
+            var info = data[i];
+            var html = '';
+            html += makeNews(info);
+        }
+        $('#news').append(html);
+    }
+
     function makeTable(data) {
         var tr = [
             '<tr>',
@@ -153,6 +161,19 @@ $(document).ready(function() {
             '</tr>'
         ].join('');
         return tr;
+    }
+
+    function makeNews(data) {
+        var html = ['<section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">',
+            '<div class="mdl-card mdl-cell mdl-cell--12-col">',
+            '<div class="mdl-card__supporting-text">',
+            '<h4>', data.title, '</h4>',
+            data.content,
+            '</div>',
+            '</div>',
+            '</section>'
+        ].join('');
+        return html;
     }
 
     function throttle(method, delay, context) {

@@ -104,14 +104,13 @@ class Api
 
     /**
      * 获取交易信息
-     * @param  string  $_GET['type']  交易类型 0,1,all
-     * @param  str|int $_GET['limit'] 每页数量
-     * @param  str|int $_GET['page']  页码
+     * @param  string  $_GET['type']   交易类型 0,1,all
+     * @param  str|int $_GET['limit']  每页数量
+     * @param  str|int $_GET['lastid'] 最后获取的ID，相对于前端
      * @return json
      */
     public function gettradeinfo()
     {
-        $TradeinfoModel = model('Tradeinfo');
         // 判断需要获取的类型并且过滤掉未定义的类型,如果是未定义的则为全部类型
         if (!isset($_GET['lastid']) || !isset($_GET['limit']) || !isset($_GET['type'])) {
             return [
@@ -120,8 +119,7 @@ class Api
             ];
         }
         // 查询
-        /*$_GET['lastid'] = (bool)$_GET['lastid'];
-        var_dump($_GET['lastid']);*/
+        $TradeinfoModel = model('Tradeinfo');
         if ($_GET['lastid'] == 'false') {
             $_GET['lastid'] = false;
         }
@@ -167,7 +165,6 @@ class Api
      */
     public function addnew()
     {
-        $NewsModel = model('News');
         if (isset($_POST['title']) &&
             isset($_POST['creatusername']) &&
             isset($_POST['content'])) {
@@ -180,6 +177,7 @@ class Api
                 ];
             }
             // 过滤post数组中的非数据表字段数据并存入数据库
+            $NewsModel = model('News');
             $NewsModel->data($_POST);
             $result = $NewsModel->allowField(true)->save();
         } else {
@@ -205,20 +203,28 @@ class Api
     /**
      * 获取新闻
      * @param  str|int $_GET['limit'] 每页数量
-     * @param  str|int $_GET['page']  页码
+     * @param  str|int $_GET['lastid']  页码
      * @return json
      */
     public function getnews()
     {
-        $NewsModel = model('News');
-        if (isset($_GET['page']) && isset($_GET['limit'])) {
-            $News = $NewsModel->order('nid desc')->page($_GET['page'], $_GET['limit'])->select();
-        } else {
+        if (!isset($_GET['limit']) && !isset($_GET['lastid'])) {
             return [
                 'status' => 0,
                 'msg' => '传入参数错误'
             ];
         }
+        $NewsModel = model('News');
+        if ($_GET['lastid'] == 'false') {
+            $_GET['lastid'] = false;
+        }
+        if ($_GET['lastid']) {
+            $dm['nid'] = ['<', $_GET['lastid']];
+            $News = $NewsModel->where($dm)->order('nid desc')->limit($_GET['limit'])->select();
+        } else {
+            $News = $NewsModel->order('nid desc')->limit($_GET['limit'])->select();
+        }
+        
         // 判断是否成功获取
         if (is_array($News)) {
             return [

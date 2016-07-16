@@ -39,11 +39,11 @@ class Api
     public function addtradeinfo()
     {
         // 判断所需参数是否全部存在如果有确实则结束
-        if (!isset($_POST['title']) &&
-            !isset($_POST['trader']) &&
-            !isset($_POST['onlinetime']) &&
-            !isset($_POST['tradingplace']) &&
-            !isset($_POST['tradetype']) &&
+        if (!isset($_POST['title']) ||
+            !isset($_POST['trader']) ||
+            !isset($_POST['onlinetime']) ||
+            !isset($_POST['tradingplace']) ||
+            !isset($_POST['tradetype']) ||
             !isset($_POST['items'])) {
             return [
                 'status' => 0,
@@ -183,7 +183,7 @@ class Api
     public function addnew()
     {
         // 判断所需参数是否全部存在如果有确实则结束
-        if (!isset($_POST['title']) && !isset($_POST['creatusername']) && !isset($_POST['content'])) {
+        if (!isset($_POST['title']) || !isset($_POST['creatusername']) || !isset($_POST['content'])) {
             return [
                 'status' => 0,
                 'msg' => '传入参数错误'
@@ -221,7 +221,7 @@ class Api
     public function getnews()
     {
         // 判断所需参数是否全部存在如果有确实则结束
-        if (!isset($_GET['limit']) && !isset($_GET['lastid'])) {
+        if (!isset($_GET['limit']) || !isset($_GET['lastid'])) {
             return [
                 'status' => 0,
                 'msg' => '传入参数错误'

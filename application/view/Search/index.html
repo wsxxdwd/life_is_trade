@@ -1,0 +1,6 @@
+{volist name="Tradeinfo" id="vo"}
+    <br/>{$vo.title}(相似度:{$vo.percent}% & 创建时间：{$vo.createtime}):<br/>
+    {volist name="vo.items" id="vo0"}
+        {$vo0.itemname}:{$vo0.itemprice}<br/>
+    {/volist}
+{/volist}

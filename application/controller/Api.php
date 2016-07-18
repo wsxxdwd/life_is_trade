@@ -2,6 +2,11 @@
 namespace app\controller;
 
 use think\Validate;
+use app\model\News;
+use app\model\Tradeinfo;
+use app\model\Tradeiteminfo;
+use common\Strbreaker;
+use think\Db;
 
 class Api
 {
@@ -38,12 +43,12 @@ class Api
      */
     public function addtradeinfo()
     {
-        // 判断所需参数是否全部存在如果有确实则结束
-        if (!isset($_POST['title']) &&
-            !isset($_POST['trader']) &&
-            !isset($_POST['onlinetime']) &&
-            !isset($_POST['tradingplace']) &&
-            !isset($_POST['tradetype']) &&
+        // 判断所需参数是否全部存在如果有缺失则结束
+        if (!isset($_POST['title']) ||
+            !isset($_POST['trader']) ||
+            !isset($_POST['onlinetime']) ||
+            !isset($_POST['tradingplace']) ||
+            !isset($_POST['tradetype']) ||
             !isset($_POST['items'])) {
             return [
                 'status' => 0,
@@ -71,14 +76,14 @@ class Api
             }
         }
         // 过滤post数组中的非数据表字段数据并存入数据库
-        $TradeinfoModel = model('Tradeinfo');
+        $TradeinfoModel = new Tradeinfo;
         $tid = $TradeinfoModel->allowField(true)->save($_POST);
         // 判断是否添加成功
         if ($tid) {
             for ($j = 0; $j < $itemnum; $j++) { 
                 $items[$j]['tid'] = $tid;
             }
-            $TradeiteminfoModel = model('Tradeiteminfo');
+            $TradeiteminfoModel = new Tradeiteminfo;
             if ($TradeiteminfoModel->allowField(true)->saveAll($items)) {
                 return [
                     'status' => 1,
@@ -111,7 +116,7 @@ class Api
      */
     public function gettradeinfo()
     {
-        // 判断参数是否存在不存在则结束
+        // 判断所需参数是否全部存在如果有缺失则结束
         if (!isset($_GET['lastid']) || !isset($_GET['limit']) || !isset($_GET['type'])) {
             return [
                 'status' => 0,
@@ -128,29 +133,28 @@ class Api
             $exp = '<';
         }
         // 获取交易信息列表
-        $TradeinfoModel = model('Tradeinfo');
-        if ($_GET['lastid'] == 'false') {
+        if ($_GET['lastid'] == 'false' || $_GET['lastid'] == '') {
             $_GET['lastid'] = false;
         }
         if ($_GET['lastid'] && ($_GET['type'] == 1 || $_GET['type'] == 0)) {
             $dm['tid'] = [$exp, $_GET['lastid']];
             $dm['tradetype'] = $_GET['type'];
-            $Tradeinfo = $TradeinfoModel->where($dm)->order('tid desc')->limit($_GET['limit'])->select();
+            $Tradeinfo = Tradeinfo::where($dm)->order('tid desc')->limit($_GET['limit'])->select();
         } elseif ($_GET['type'] == 1 || $_GET['type'] == 0) {
             $dm['tradetype'] = $_GET['type'];
-            $Tradeinfo = $TradeinfoModel->where($dm)->order('tid desc')->limit($_GET['limit'])->select();
+            $Tradeinfo = Tradeinfo::where($dm)->order('tid desc')->limit($_GET['limit'])->select();
         } elseif ($_GET['lastid']) {
             $dm['tid'] = [$exp, $_GET['lastid']];
-            $Tradeinfo = $TradeinfoModel->where($dm)->order('tid desc')->limit($_GET['limit'])->select();
+            $Tradeinfo = Tradeinfo::where($dm)->order('tid desc')->limit($_GET['limit'])->select();
         } else {
-            $Tradeinfo = $TradeinfoModel->order('tid desc')->limit($_GET['limit'])->select();
+            $Tradeinfo = Tradeinfo::order('tid desc')->limit($_GET['limit'])->select();
         }
         // 判断是否成功获取交易信息列表如果成功获取便获取物品信息
         if (is_array($Tradeinfo)) {
             // 获取物品列表
             foreach ($Tradeinfo as $key => $data) {
-                $TradeiteminfoModel = model('Tradeiteminfo');
-                $item = $TradeiteminfoModel->where('tid=' . $data['tid'])->order('iid')->select();
+                $TradeiteminfoModel = new Tradeiteminfo;
+                $item = Tradeiteminfo::where('tid=' . $data['tid'])->order('iid')->select();
                 if (is_array($item)) {
                     $Tradeinfo[$key]['items'] = $item;
                 } else {
@@ -182,8 +186,8 @@ class Api
      */
     public function addnew()
     {
-        // 判断所需参数是否全部存在如果有确实则结束
-        if (!isset($_POST['title']) && !isset($_POST['creatusername']) && !isset($_POST['content'])) {
+        // 判断所需参数是否全部存在如果有缺失则结束
+        if (!isset($_POST['title']) || !isset($_POST['creatusername']) || !isset($_POST['content'])) {
             return [
                 'status' => 0,
                 'msg' => '传入参数错误'
@@ -198,7 +202,7 @@ class Api
             ];
         }
         // 过滤post数组中的非数据表字段数据并存入数据库
-        $NewsModel = model('News');
+        $NewsModel = new News;
         if ($NewsModel->allowField(true)->save($_POST)) {
             return [
                 'status' => 1,
@@ -220,23 +224,22 @@ class Api
      */
     public function getnews()
     {
-        // 判断所需参数是否全部存在如果有确实则结束
-        if (!isset($_GET['limit']) && !isset($_GET['lastid'])) {
+        // 判断所需参数是否全部存在如果有缺失则结束
+        if (!isset($_GET['limit']) || !isset($_GET['lastid'])) {
             return [
                 'status' => 0,
                 'msg' => '传入参数错误'
             ];
         }
         // 获取新闻列表
-        $NewsModel = model('News');
-        if ($_GET['lastid'] == 'false') {
+        if ($_GET['lastid'] == 'false' || $_GET['lastid'] == '') {
             $_GET['lastid'] = false;
         }
         if ($_GET['lastid']) {
             $dm['nid'] = ['<', $_GET['lastid']];
-            $News = $NewsModel->where($dm)->order('nid desc')->limit($_GET['limit'])->select();
+            $News = News::where($dm)->order('nid desc')->limit($_GET['limit'])->select();
         } else {
-            $News = $NewsModel->order('nid desc')->limit($_GET['limit'])->select();
+            $News = News::order('nid desc')->limit($_GET['limit'])->select();
         }
         // 判断是否成功获取
         if (is_array($News)) {
@@ -250,6 +253,93 @@ class Api
                 'status' => 0,
                 'msg' => '新闻获取失败'
             ];
+        }
+    }
+
+    public function search()
+    {
+        // 判断所需参数是否全部存在如果有缺失则结束
+        if (!isset($_GET['wd']) || !isset($_GET['limit']) || !isset($_GET['lastid']) || !isset($_GET['type'])) {
+            return [
+                'status' => 0,
+                'msg' => '传入参数错误'
+            ];
+        } else {
+            if ($_GET['wd'] = '' || mb_strlen($_GET['wd']) > 30) {
+                return [
+                    'status' => 0,
+                    'msg' => '关键字格式错误'
+                ];
+            }
+            if ($_GET['lastid'] == 'false' || $_GET['lastid'] == '') {
+                $_GET['lastid'] = false;
+            }
+            // 对关键字进行简单分词
+            $strarr = Strbreaker::strbreaker($_GET['wd']);
+            // 生成SQL语句，并查询数据
+            $strarrlen = count($strarr);
+            $condition = '';
+            for ($i = 0; $i < $strarrlen; $i++) { 
+                if ($i == 0) {
+                    $condition = "itemname LIKE '%" . $strarr[$i] . "%' ";
+                } else {
+                    $condition .= "OR itemname LIKE '%" . $strarr[$i] . "%' ";
+                }
+            }
+            $Tradeiteminfo = Db::query("select * from lit_tradeiteminfo where (" . $condition . ")");
+            // 如果找到数据，计算相似度并按照相似度排序
+            if (is_array($Tradeiteminfo)) {
+                // 获取交易信息
+                $Tradeiteminfolen = count($Tradeiteminfo);
+                for ($j = 0; $j < $Tradeiteminfolen; $j++) { 
+                    $keylist[] = $Tradeiteminfo[$j]['tid'];
+                }
+                $Tradeinfo = Tradeinfo::all($keylist);
+                // 判断是否成功获取交易信息列表如果成功获取便获取物品信息
+                if (is_array($Tradeinfo)) {
+                    // 获取物品列表，并计算相似度
+                    $volume = array();
+                    foreach ($Tradeinfo as $key => $data) {
+                        $items = Tradeiteminfo::where('tid=' . $data['tid'])->order('iid')->select();
+                        if (is_array($items)) {
+                            $Tradeinfo[$key]['items'] = $items;
+                            $percent = 0;
+                            $Tradeinfo[$key]['percent'] = 0;
+                            // 计算相似度
+                            foreach ($items as $itemidx => $item) {
+                                similar_text($items[$itemidx]['itemname'], $_GET['wd'], $percent);
+                                // 只存入更大的值
+                                if ($percent > $Tradeinfo[$key]['percent']) {
+                                    $Tradeinfo[$key]['percent'] = $percent;
+                                    $volume[$key] = $percent;
+                                }
+                            }
+                        } else {
+                           return [
+                                'status' => 0,
+                                'msg' => '搜索失败'
+                            ];
+                        }
+                    }
+                    // 根据相似度排序并输出数据
+                    array_multisort($volume, SORT_DESC, $Tradeinfo);
+                    return [
+                        'status' => 1,
+                        'msg' => '成功获取新闻',
+                        'data' => $Tradeinfo
+                    ];
+                } else {
+                    return [
+                        'status' => 0,
+                        'msg' => '搜索失败'
+                    ];
+                }
+            } else {
+                return [
+                    'status' => 0,
+                    'msg' => '搜索失败'
+                ];
+            }
         }
     }
 

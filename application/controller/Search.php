@@ -28,7 +28,6 @@ class Search extends Controller
                 }
             }
             $Tradeiteminfo = Db::query("select * from lit_tradeiteminfo where (" . $condition . ")");
-            $Tradeiteminfolen = count($Tradeiteminfo);
             // 如果找到数据，计算相似度并按照相似度排序
             if (is_array($Tradeiteminfo)) {
                 foreach ($Tradeiteminfo as $key => $row) {
@@ -37,16 +36,32 @@ class Search extends Controller
                 }
                 array_multisort($volume, SORT_DESC, $Tradeiteminfo);
                 // 获取交易信息
+                $Tradeiteminfolen = count($Tradeiteminfo);
                 for ($j = 0; $j < $Tradeiteminfolen; $j++) { 
                     $keylist[] = $Tradeiteminfo[$j]['tid'];
                 }
                 $TradeinfoModel = model('Tradeinfo');
                 $Tradeinfo = $TradeinfoModel->all($keylist);
-                var_dump($Tradeinfo);
+                // 判断是否成功获取交易信息列表如果成功获取便获取物品信息
+                if (is_array($Tradeinfo)) {
+                    // 获取物品列表
+                    foreach ($Tradeinfo as $key => $data) {
+                        $TradeiteminfoModel = model('Tradeiteminfo');
+                        $item = $TradeiteminfoModel->where('tid=' . $data['tid'])->order('iid')->select();
+                        if (is_array($item)) {
+                            $Tradeinfo[$key]['items'] = $item;
+                        } else {
+                           $this->assign('Tradeinfo', false);
+                           return $this->fetch();
+                        }
+                    }
+                    $this->assign('Tradeinfo', $Tradeinfo);
+                } else {
+                    $this->assign('Tradeinfo', false);
+                }
             } else {
                 $this->assign('Tradeinfo', false);
             }
-            $this->assign('Tradeiteminfo',$Tradeiteminfo);
         }
         return $this->fetch();
     }

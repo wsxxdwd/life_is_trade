@@ -74,13 +74,14 @@ class Api
             }
         }
         // 过滤post数组中的非数据表字段数据并存入数据库
+        $TradeinfoModel = new Tradeinfo;
         $tid = $TradeinfoModel->allowField(true)->save($_POST);
         // 判断是否添加成功
         if ($tid) {
             for ($j = 0; $j < $itemnum; $j++) { 
                 $items[$j]['tid'] = $tid;
             }
-            $TradeiteminfoModel = model('Tradeiteminfo');
+            $TradeiteminfoModel = new Tradeiteminfo;
             if ($TradeiteminfoModel->allowField(true)->saveAll($items)) {
                 return [
                     'status' => 1,
@@ -150,7 +151,7 @@ class Api
         if (is_array($Tradeinfo)) {
             // 获取物品列表
             foreach ($Tradeinfo as $key => $data) {
-                $TradeiteminfoModel = model('Tradeiteminfo');
+                $TradeiteminfoModel = new Tradeiteminfo;
                 $item = Tradeiteminfo::where('tid=' . $data['tid'])->order('iid')->select();
                 if (is_array($item)) {
                     $Tradeinfo[$key]['items'] = $item;
@@ -199,7 +200,7 @@ class Api
             ];
         }
         // 过滤post数组中的非数据表字段数据并存入数据库
-        $NewsModel = model('News');
+        $NewsModel = new News;
         if ($NewsModel->allowField(true)->save($_POST)) {
             return [
                 'status' => 1,

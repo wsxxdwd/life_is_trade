@@ -2,6 +2,9 @@
 namespace app\controller;
 
 use think\Validate;
+use app\model\News;
+use app\model\Tradeinfo;
+use app\model\Tradeiteminfo;
 
 class Api
 {
@@ -71,7 +74,6 @@ class Api
             }
         }
         // 过滤post数组中的非数据表字段数据并存入数据库
-        $TradeinfoModel = model('Tradeinfo');
         $tid = $TradeinfoModel->allowField(true)->save($_POST);
         // 判断是否添加成功
         if ($tid) {
@@ -128,29 +130,28 @@ class Api
             $exp = '<';
         }
         // 获取交易信息列表
-        $TradeinfoModel = model('Tradeinfo');
         if ($_GET['lastid'] == 'false') {
             $_GET['lastid'] = false;
         }
         if ($_GET['lastid'] && ($_GET['type'] == 1 || $_GET['type'] == 0)) {
             $dm['tid'] = [$exp, $_GET['lastid']];
             $dm['tradetype'] = $_GET['type'];
-            $Tradeinfo = $TradeinfoModel->where($dm)->order('tid desc')->limit($_GET['limit'])->select();
+            $Tradeinfo = Tradeinfo::where($dm)->order('tid desc')->limit($_GET['limit'])->select();
         } elseif ($_GET['type'] == 1 || $_GET['type'] == 0) {
             $dm['tradetype'] = $_GET['type'];
-            $Tradeinfo = $TradeinfoModel->where($dm)->order('tid desc')->limit($_GET['limit'])->select();
+            $Tradeinfo = Tradeinfo::where($dm)->order('tid desc')->limit($_GET['limit'])->select();
         } elseif ($_GET['lastid']) {
             $dm['tid'] = [$exp, $_GET['lastid']];
-            $Tradeinfo = $TradeinfoModel->where($dm)->order('tid desc')->limit($_GET['limit'])->select();
+            $Tradeinfo = Tradeinfo::where($dm)->order('tid desc')->limit($_GET['limit'])->select();
         } else {
-            $Tradeinfo = $TradeinfoModel->order('tid desc')->limit($_GET['limit'])->select();
+            $Tradeinfo = Tradeinfo::order('tid desc')->limit($_GET['limit'])->select();
         }
         // 判断是否成功获取交易信息列表如果成功获取便获取物品信息
         if (is_array($Tradeinfo)) {
             // 获取物品列表
             foreach ($Tradeinfo as $key => $data) {
                 $TradeiteminfoModel = model('Tradeiteminfo');
-                $item = $TradeiteminfoModel->where('tid=' . $data['tid'])->order('iid')->select();
+                $item = Tradeiteminfo::where('tid=' . $data['tid'])->order('iid')->select();
                 if (is_array($item)) {
                     $Tradeinfo[$key]['items'] = $item;
                 } else {
@@ -228,15 +229,14 @@ class Api
             ];
         }
         // 获取新闻列表
-        $NewsModel = model('News');
         if ($_GET['lastid'] == 'false') {
             $_GET['lastid'] = false;
         }
         if ($_GET['lastid']) {
             $dm['nid'] = ['<', $_GET['lastid']];
-            $News = $NewsModel->where($dm)->order('nid desc')->limit($_GET['limit'])->select();
+            $News = News::where($dm)->order('nid desc')->limit($_GET['limit'])->select();
         } else {
-            $News = $NewsModel->order('nid desc')->limit($_GET['limit'])->select();
+            $News = News::order('nid desc')->limit($_GET['limit'])->select();
         }
         // 判断是否成功获取
         if (is_array($News)) {

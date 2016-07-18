@@ -17,6 +17,14 @@ $(document).ready(function() {
         }
     }, 300, this));
 
+    $('#search').on('keyup', throttle(function() {
+        if (!isloading) {
+            var wd = $(this).val();
+            var type = $('.mdl-layout__tab-panel.is-active').attr('id');
+            search(wd, type);
+        }
+    }, 300, $('#search')));
+
     function getInfoList(type) {
         var lastid = $('.is-active section').last().length ? $('.is-active section').last().data('id') : false;
         if (type === 'sell') {
@@ -32,7 +40,7 @@ $(document).ready(function() {
                 dataType: 'json',
                 success: function(res) {
                     isloading = false;
-                    if (res.status == 1) {
+                    if (res.status === 1) {
                         renderPage($('#sell'), res.data);
                     } else {
                         var msg = { message: '获取失败' };
@@ -60,7 +68,7 @@ $(document).ready(function() {
                 dataType: 'json',
                 success: function(res) {
                     isloading = false;
-                    if (res.status == 1) {
+                    if (res.status === 1) {
                         renderPage($('#buy'), res.data);
                     } else {
                         var msg = { message: '获取失败' };
@@ -87,7 +95,7 @@ $(document).ready(function() {
                 dataType: 'json',
                 success: function(res) {
                     isloading = false;
-                    if (res.status == 1) {
+                    if (res.status === 1) {
                         renderPage($('#buy'), res.data);
                     } else {
                         var msg = { message: '获取失败' };
@@ -189,4 +197,55 @@ $(document).ready(function() {
 
     }
 
+    function search(wd, type) {
+        var lastid = $('.is-active section').last().length ? $('.is-active section').last().data('id') : false;
+        isloading = true;
+        if (type === 'sell') {
+
+            var searchType = 0;
+        } else if (type === 'buy') {
+
+            var searchType = 1;
+        }
+        $.ajax({
+            type: 'get',
+            url: '/api/search',
+            data: {
+                wd: wd,
+                lastid: lastid,
+                limit: 10,
+                type: searchType
+            },
+            dataType: 'json',
+            success: function(res) {
+                isloading = false;
+                if (res.status === 1) {
+                    renderPage($('#' + type), res.data);
+                } else {
+                    var msg = { message: '获取失败' };
+                    snackbarContainer.MaterialSnackbar.showSnackbar(msg);
+
+                }
+            },
+            error: function(err) {
+                isloading = false;
+                var msg = { message: '获取失败' };
+                snackbarContainer.MaterialSnackbar.showSnackbar(msg);
+                console.log(err);
+            }
+        });
+    }
 });
+
+function throttle(method, delay, context) {
+    var timer = null;
+    var context = context ? context : this,
+        args = arguments;
+    return function() {
+        clearTimeout(timer);
+        timer = setTimeout(function() {
+            method.apply(context, args);
+        }, delay);
+    }
+
+}

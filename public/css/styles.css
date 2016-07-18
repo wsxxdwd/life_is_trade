@@ -261,3 +261,10 @@ input[type="text"] {
 .mdl-demo .mdl-layout.is-small-screen .mdl-layout__tab-bar .mdl-button {
   top: 5px!important;
 }
+.search-box {
+  min-height: 100px;
+  margin-top: 20px;
+}
+.search-box .mdl-cell {
+  margin: auto;
+}

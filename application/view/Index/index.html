@@ -77,13 +77,20 @@
             </div>
         </header>
         <main class="mdl-layout__content">
+            <section class="section--center mdl-grid mdl-grid--no-spacing">
+                <div class="mdl-card mdl-cell mdl-cell--12-col search-box">
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-cell--8-col mdl-cell">
+                        <input class="mdl-textfield__input" type="text" id="poster">
+                        <label class="mdl-textfield__label" for="poster">搜索</label>
+                        <span class="mdl-textfield__error">最大长度30</span>
+                    </div>
+                </div>
+            </section>
             <div class="mdl-layout__tab-panel is-active" id="sell">
             </div>
             <div class="mdl-layout__tab-panel" id="buy">
-
             </div>
             <div class="mdl-layout__tab-panel" id="news">
-                
             </div>
             {include file="./templet/footer.html"/}
         </main>

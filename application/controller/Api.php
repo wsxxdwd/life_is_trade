@@ -265,7 +265,7 @@ class Api
                 'msg' => '传入参数错误'
             ];
         } else {
-            if ($_GET['wd'] = '' || mb_strlen($_GET['wd']) > 30) {
+            if ($_GET['wd'] == '' || mb_strlen($_GET['wd']) > 30) {
                 return [
                     'status' => 0,
                     'msg' => '关键字格式错误'

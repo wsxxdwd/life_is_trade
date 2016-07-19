@@ -11,7 +11,7 @@ class Strbreaker
     public static function strbreaker($str = '') {
         $strlen = mb_strlen($str);
         $strarr = array();
-        for ($sublen = 1; $sublen < $strlen; $sublen++) {
+        for ($sublen = 1; $sublen <= $strlen; $sublen++) {
             $aclen = $strlen - ($sublen - 1);
             for ($start = 0; $start < $aclen; $start++) { 
                 $strarr[] = mb_substr($str, $start, $sublen);

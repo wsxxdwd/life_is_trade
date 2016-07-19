@@ -8,7 +8,7 @@ class Strbreaker
      * @param  string $str 需要分词的字符串
      * @return array
      */
-    public static function strbreaker($str = '') {
+    /*public static function strbreaker($str = '') {
         $strlen = mb_strlen($str);
         $strarr = array();
         for ($sublen = 1; $sublen <= $strlen; $sublen++) {
@@ -16,6 +16,14 @@ class Strbreaker
             for ($start = 0; $start < $aclen; $start++) { 
                 $strarr[] = mb_substr($str, $start, $sublen);
             }
+        }
+        return $strarr;
+    }*/
+    public static function strbreaker($str = '') {
+        $strlen = mb_strlen($str);
+        $strarr = array();
+        for ($sublen = 0; $sublen < $strlen; $sublen++) {
+            $strarr[] = mb_substr($str, $sublen, 1);
         }
         return $strarr;
     }

@@ -84,10 +84,6 @@ $(document).ready(function() {
                     isloading = false;
                     if (res.status === 1) {
                         renderPage($('#sell'), res.data);
-                    } else {
-                        var msg = { message: '获取失败' };
-                        snackbarContainer.MaterialSnackbar.showSnackbar(msg);
-
                     }
                 },
                 error: function(err) {
@@ -112,10 +108,6 @@ $(document).ready(function() {
                     isloading = false;
                     if (res.status === 1) {
                         renderPage($('#buy'), res.data);
-                    } else {
-                        var msg = { message: '获取失败' };
-                        snackbarContainer.MaterialSnackbar.showSnackbar(msg);
-
                     }
                 },
                 error: function(err) {
@@ -138,11 +130,7 @@ $(document).ready(function() {
                 success: function(res) {
                     isloading = false;
                     if (res.status === 1) {
-                        renderPage($('#buy'), res.data);
-                    } else {
-                        var msg = { message: '获取失败' };
-                        snackbarContainer.MaterialSnackbar.showSnackbar(msg);
-
+                        renderNews(res.data);
                     }
                 },
                 error: function(err) {
@@ -193,9 +181,9 @@ $(document).ready(function() {
     }
 
     function renderNews(data) {
+        var html = '';
         for (var i in data) {
             var info = data[i];
-            var html = '';
             html += makeNews(info);
         }
         $('#news').append(html);

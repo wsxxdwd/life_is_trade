@@ -281,63 +281,39 @@ class Api
             $condition = '';
             for ($i = 0; $i < $strarrlen; $i++) { 
                 if ($i == 0) {
-                    $condition = "itemname LIKE '%" . $strarr[$i] . "%' ";
+                    $condition = "lit_tradeiteminfo.itemname LIKE '%" . $strarr[$i] . "%' ";
                 } else {
-                    $condition .= "OR itemname LIKE '%" . $strarr[$i] . "%' ";
+                    $condition .= "OR lit_tradeiteminfo.itemname LIKE '%" . $strarr[$i] . "%' ";
                 }
             }
-            $Tradeiteminfo = Db::query("select * from lit_tradeiteminfo where (" . $condition . ")");
-            // 如果找到数据，计算相似度并按照相似度排序
-            if (is_array($Tradeiteminfo)) {
-                // 获取交易信息
-                $Tradeiteminfolen = count($Tradeiteminfo);
-                for ($j = 0; $j < $Tradeiteminfolen; $j++) { 
-                    $keylist[] = $Tradeiteminfo[$j]['tid'];
-                }
-                $Tradeinfo = Tradeinfo::all($keylist);
-                // 判断是否成功获取交易信息列表如果成功获取便获取物品信息
-                if (is_array($Tradeinfo)) {
-                    // 获取物品列表，并计算相似度
-                    $volume = array();
-                    foreach ($Tradeinfo as $key => $data) {
-                        $items = Tradeiteminfo::where('tid=' . $data['tid'])->order('iid')->select();
-                        if (is_array($items)) {
-                            $Tradeinfo[$key]['items'] = $items;
-                            $percent = 0;
-                            $Tradeinfo[$key]['percent'] = 0;
-                            // 计算相似度
-                            foreach ($items as $itemidx => $item) {
-                                similar_text($items[$itemidx]['itemname'], $_GET['wd'], $percent);
-                                // 只存入更大的值
-                                if ($percent > $Tradeinfo[$key]['percent']) {
-                                    $Tradeinfo[$key]['percent'] = $percent;
-                                    $volume[$key] = $percent;
-                                }
-                            }
-                        } else {
-                           return [
-                                'status' => 0,
-                                'msg' => '搜索失败'
-                            ];
-                        }
+            if ($_GET['lastid'] == false) {
+                $Tradeinfo = Db::query("select lit_tradeinfo.* from lit_tradeiteminfo LEFT JOIN lit_tradeinfo ON lit_tradeiteminfo.tid = lit_tradeinfo.tid where (" . $condition . ") AND lit_tradeinfo.tradetype = " . $_GET['type'] . " group by lit_tradeinfo.tid ORDER BY lit_tradeinfo.tid DESC LIMIT 0," . $_GET['limit']);
+            } else {
+                $Tradeinfo = Db::query("select lit_tradeinfo.* from lit_tradeiteminfo LEFT JOIN lit_tradeinfo ON lit_tradeiteminfo.tid = lit_tradeinfo.tid where (" . $condition . ") AND lit_tradeinfo.tid < " . $_GET['lastid'] . " AND lit_tradeinfo.tradetype = " . $_GET['type'] . " group by lit_tradeinfo.tid ORDER BY lit_tradeinfo.tid DESC LIMIT 0," . $_GET['limit']);
+            }
+            // 如果找到数据
+            $Tradeinfolen = count($Tradeinfo);
+            if (is_array($Tradeinfo) && $Tradeinfolen >= 1) {
+                foreach ($Tradeinfo as $key => $data) {
+                    $items = Tradeiteminfo::where('tid=' . $data['tid'])->order('iid')->select();
+                    if (is_array($items)) {
+                        $Tradeinfo[$key]['items'] = $items;
+                    } else {
+                       return [
+                            'status' => 0,
+                            'msg' => '搜索失败'
+                        ];
                     }
-                    // 根据相似度排序并输出数据
-                    array_multisort($volume, SORT_DESC, $Tradeinfo);
-                    return [
-                        'status' => 1,
-                        'msg' => '成功获取新闻',
-                        'data' => $Tradeinfo
-                    ];
-                } else {
-                    return [
-                        'status' => 0,
-                        'msg' => '搜索失败'
-                    ];
                 }
+                return [
+                    'status' => 1,
+                    'msg' => '成功搜索到有用的交易信息',
+                    'data' => $Tradeinfo
+                ];
             } else {
                 return [
                     'status' => 0,
-                    'msg' => '搜索失败'
+                    'msg' => '未搜索到有用的交易信息'
                 ];
             }
         }

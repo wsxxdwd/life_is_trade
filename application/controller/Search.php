@@ -37,7 +37,7 @@ class Search extends Controller
                 for ($j = 0; $j < $Tradeiteminfolen; $j++) { 
                     $keylist[] = $Tradeiteminfo[$j]['tid'];
                 }
-                $Tradeinfo = Tradeinfo::order('createtime')->all($keylist);
+                $Tradeinfo = Tradeinfo::all($keylist);
                 // 判断是否成功获取交易信息列表如果成功获取便获取物品信息
                 if (is_array($Tradeinfo)) {
                     // 获取物品列表，并计算相似度

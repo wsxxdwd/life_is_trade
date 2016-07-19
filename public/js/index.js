@@ -5,28 +5,70 @@ $(document).ready(function() {
     getInfoList('news');
 
     var isloading = false;
+    var isSearch = false;
 
+    var backTopBtn = $('.back-top');
     $('main').scroll(throttle(function() {
         var scrollTop = $('main').scrollTop() + $(window).height();
         var pageHeight = $('.mdl-layout__tab-panel.is-active').height();
-        if (scrollTop > (pageHeight - 100)) {
-            if (!isloading) {
+        console.log(scrollTop ,pageHeight)
+        if (scrollTop > pageHeight) {
+            if (!isloading && !isSearch) {
                 var type = $('.mdl-layout__tab-panel.is-active').attr('id');
                 getInfoList(type);
             }
         }
+        if(scrollTop > 1200) {
+            backTopBtn.fadeIn()
+        } else {
+            backTopBtn.fadeOut('fast');
+        }
+    }, 300, this));
+
+    $('.mdl-layout--fixed-header').scroll(throttle(function() {
+        var scrollTop = $('.mdl-layout--fixed-header').scrollTop() + $(window).height();
+        var pageHeight = $('.mdl-layout__tab-panel.is-active').height();
+        console.log(scrollTop ,pageHeight)
+        if (scrollTop > pageHeight) {
+            if (!isloading && !isSearch) {
+                var type = $('.mdl-layout__tab-panel.is-active').attr('id');
+                getInfoList(type);
+            }
+        }
+        if(scrollTop > 1200) {
+            backTopBtn.fadeIn()
+        } else {
+            backTopBtn.fadeOut('fast');
+        }
     }, 300, this));
 
     $('#search').on('keyup', throttle(function() {
+        var wd = $(this).val();
+        if($.trim(wd) === '') {
+            isSearch = false;
+        } else {
+            isSearch = true;
+        }
         if (!isloading) {
-            var wd = $(this).val();
+            var wd = wd;
             var type = $('.mdl-layout__tab-panel.is-active').attr('id');
             search(wd, type);
         }
-    }, 300, $('#search')));
+    }, 800, $('#search')));
 
-    function getInfoList(type) {
-        var lastid = $('.is-active section').last().length ? $('.is-active section').last().data('id') : false;
+    $('.mdl-layout__tab').click(function() {
+        var type = $('.mdl-layout__tab-panel.is-active').attr('id');
+        isSearch = false;
+        $('#search').val('');
+        $('#' + type).html('');
+        getInfoList(type)
+    });
+
+    backTopBtn.click(function() {
+        $('.mdl-layout--fixed-header, main').scrollTop(0);
+    });
+    function getInfoList(type, lastid) {
+        var lastid = typeof lastid !== 'undefined' ? lastid : $('.is-active section').last().length ? $('.is-active section').last().data('id') : false;
         if (type === 'sell') {
             isloading = true;
             $.ajax({
@@ -198,13 +240,17 @@ $(document).ready(function() {
     }
 
     function search(wd, type) {
+        var typePanel = $('#' + type).html('');
+        if(!isSearch) {
+            typePanel.html('');
+            getInfoList(type);
+            return;
+        }
         var lastid = $('.is-active section').last().length ? $('.is-active section').last().data('id') : false;
         isloading = true;
         if (type === 'sell') {
-
             var searchType = 0;
         } else if (type === 'buy') {
-
             var searchType = 1;
         }
         $.ajax({
@@ -213,18 +259,15 @@ $(document).ready(function() {
             data: {
                 wd: wd,
                 lastid: lastid,
-                limit: 10,
+                limit: 100,
                 type: searchType
             },
             dataType: 'json',
             success: function(res) {
                 isloading = false;
                 if (res.status === 1) {
+                    typePanel.html('');
                     renderPage($('#' + type), res.data);
-                } else {
-                    var msg = { message: '获取失败' };
-                    snackbarContainer.MaterialSnackbar.showSnackbar(msg);
-
                 }
             },
             error: function(err) {

@@ -19,7 +19,7 @@ class Api
     {
         return [
             "owner" => "life_is_trade.com",
-            "version" => "0.1.1"
+            "version" => "0.1.1.0"
         ];
     }
 

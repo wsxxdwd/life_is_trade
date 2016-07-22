@@ -73,7 +73,7 @@ $(document).ready(function() {
             isloading = true;
             $.ajax({
                 type: 'get',
-                url: '/api/gettradeinfo',
+                url: '/home/api/gettradeinfo',
                 data: {
                     type: 0,
                     lastid: lastid,
@@ -97,7 +97,7 @@ $(document).ready(function() {
             isloading = true;
             $.ajax({
                 type: 'get',
-                url: '/api/gettradeinfo',
+                url: '/home/api/gettradeinfo',
                 data: {
                     type: 1,
                     lastid: lastid,
@@ -121,7 +121,7 @@ $(document).ready(function() {
             isloading = true;
             $.ajax({
                 type: 'get',
-                url: '/api/getnews',
+                url: '/home/api/getnews',
                 data: {
                     lastid: lastid,
                     limit: 10
@@ -243,7 +243,7 @@ $(document).ready(function() {
         }
         $.ajax({
             type: 'get',
-            url: '/api/search',
+            url: '/home/api/search',
             data: {
                 wd: wd,
                 lastid: lastid,

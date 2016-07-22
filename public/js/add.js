@@ -8,7 +8,7 @@ $(document).ready(function() {
             $.ajax({
                 type: 'post',
                 data: data,
-                url: '/api/addtradeinfo',
+                url: '/home/api/addtradeinfo',
                 dataType: 'json',
                 success: function(res) {
                     if (res.status === 1) {

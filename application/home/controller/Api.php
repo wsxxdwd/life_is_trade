@@ -1,10 +1,10 @@
 <?php
-namespace app\controller;
+namespace app\home\controller;
 
 use think\Validate;
-use app\model\News;
-use app\model\Tradeinfo;
-use app\model\Tradeiteminfo;
+use app\home\model\News;
+use app\home\model\Tradeinfo;
+use app\home\model\Tradeiteminfo;
 use common\Strbreaker;
 use think\Db;
 

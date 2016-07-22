@@ -1,5 +1,5 @@
 <?php
-namespace app\validate;
+namespace app\home\validate;
 
 use think\Validate;
 

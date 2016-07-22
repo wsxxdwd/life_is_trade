@@ -23,7 +23,7 @@ return [
     // 应用模式状态
     'app_status'             => '',
     // 是否支持多模块
-    'app_multi_module'       => false,
+    'app_multi_module'       => true,
     // 注册的根命名空间
     'root_namespace'         => [],
     // 扩展配置文件
@@ -54,7 +54,7 @@ return [
     // +----------------------------------------------------------------------
 
     // 默认模块名
-    'default_module'         => 'index',
+    'default_module'         => 'home',
     // 禁止访问模块
     'deny_module_list'       => ['common'],
     // 默认控制器名

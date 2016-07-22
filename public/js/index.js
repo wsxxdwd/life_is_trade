@@ -194,8 +194,8 @@ $(document).ready(function() {
             '<tr>',
             '<td class="mdl-data-table__cell--non-numeric">', data.itemname, '</td>',
             '<td>', data.itemnum, '</td>',
-            '<td>', data.itemprice, '</td>',
             '<td>', data.itemquality, '</td>',
+            '<td>', data.itemprice, '</td>',
             '</tr>'
         ].join('');
         return tr;

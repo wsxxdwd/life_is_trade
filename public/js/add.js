@@ -1,30 +1,35 @@
 $(document).ready(function() {
     var snackbarContainer = document.querySelector('#toast');
-
+    var isPublishing = false;
     $('#publishBtn').click(function(e) {
         e.preventDefault();
-        var data = getFormData();
-        if (!!data) {
-            $.ajax({
-                type: 'post',
-                data: data,
-                url: '/api/addtradeinfo',
-                dataType: 'json',
-                success: function(res) {
-                    if (res.status === 1) {
-                        var msg = { message: '发布成功' };
-                    } else {
+        if (!isPublishing) {
+            var data = getFormData();
+            if (!!data) {
+                isPublishing = true;
+                $.ajax({
+                    type: 'post',
+                    data: data,
+                    url: '/api/addtradeinfo',
+                    dataType: 'json',
+                    success: function(res) {
+                        isPublishing = false;
+                        if (res.status === 1) {
+                            var msg = { message: '发布成功' };
+                            window.location = '/';
+                        } else {
+                            var msg = { message: '发布失败' };
+                        }
+                        snackbarContainer.MaterialSnackbar.showSnackbar(msg);
+                    },
+                    error: function(err) {
+                        isPublishing = false;
                         var msg = { message: '发布失败' };
+                        snackbarContainer.MaterialSnackbar.showSnackbar(msg);
                     }
-                    snackbarContainer.MaterialSnackbar.showSnackbar(msg);
-                },
-                error: function(err) {
-                    var msg = { message: '发布失败' };
-                    snackbarContainer.MaterialSnackbar.showSnackbar(msg);
-                }
-            })
+                })
+            }
         }
-
     });
     $('#addItemBtn').click(function(e) {
         e.preventDefault();

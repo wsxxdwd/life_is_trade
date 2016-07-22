@@ -15,6 +15,14 @@ class Api
         ];
     }
 
+    /**
+     * 添加第一位
+     * @return [type] [description]
+     */
+    public function addfirstadmin() {
+
+    }
+
     public function test() {
         $options['salt'] = \helper\Str::random(6);
         $h = \helper\Hash::make($_GET['wd'], 'md5', $options);

@@ -45,6 +45,14 @@ $(document).ready(function() {
         $(this).parent().remove();
     });
 
+    $('.map').on('click', function(ev) {
+        var top = (ev.offsetY / $(this).height()) * 100 + '%';
+        var left = (ev.offsetX / $(this).width()) * 100 + '%';
+        $('.pointer').css({
+            top: top,
+            left: left
+        });
+    });
     function getFormData() {
         var dataError = false;
 
@@ -115,7 +123,8 @@ $(document).ready(function() {
             $('#tradePos').parent().addClass('is-invalid');
             dataError = true;
         }
-
+        var positionTop =  $('.pointer').css('top');
+        var positionLeft =  $('.pointer').css('left');
         if (dataError) {
             var msg = { message: '请完善信息' };
             snackbarContainer.MaterialSnackbar.showSnackbar(msg);
@@ -127,7 +136,9 @@ $(document).ready(function() {
                 items: items,
                 trader: poster,
                 onlinetime: gameTime,
-                tradingplace: tradePos
+                tradingplace: tradePos,
+                top: positionTop,
+                left: positionLeft 
             }
             return data;
         }

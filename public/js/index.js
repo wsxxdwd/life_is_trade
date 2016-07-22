@@ -64,6 +64,13 @@ $(document).ready(function() {
         getInfoList(type)
     });
 
+    $('body').on('click', '.location-link', function(e) {
+        e.preventDefault();
+        $('.map-location').show();
+    });
+    $('.map-location').click(function() {
+        $(this).hide();
+    })
     backTopBtn.click(function() {
         $('.mdl-layout--fixed-header, main').scrollTop(0);
     });
@@ -73,7 +80,7 @@ $(document).ready(function() {
             isloading = true;
             $.ajax({
                 type: 'get',
-                url: '/api/gettradeinfo',
+                url: '/home/api/gettradeinfo',
                 data: {
                     type: 0,
                     lastid: lastid,
@@ -97,7 +104,7 @@ $(document).ready(function() {
             isloading = true;
             $.ajax({
                 type: 'get',
-                url: '/api/gettradeinfo',
+                url: '/home/api/gettradeinfo',
                 data: {
                     type: 1,
                     lastid: lastid,
@@ -121,7 +128,7 @@ $(document).ready(function() {
             isloading = true;
             $.ajax({
                 type: 'get',
-                url: '/api/getnews',
+                url: '/home/api/getnews',
                 data: {
                     lastid: lastid,
                     limit: 10
@@ -169,7 +176,7 @@ $(document).ready(function() {
                 table,
                 '</tbody>',
                 '</table>',
-                '<h6>交易地点： ', info.tradingplace, '</h6>',
+                '<h6>交易地点： ', info.tradingplace, '<a class="location-link" href="#">点击查看地图坐标</a></h6>',
                 '<h6>在线时间： ', info.onlinetime, '</h6>',
                 '</div>',
                 '</div>',
@@ -243,7 +250,7 @@ $(document).ready(function() {
         }
         $.ajax({
             type: 'get',
-            url: '/api/search',
+            url: '/home/api/search',
             data: {
                 wd: wd,
                 lastid: lastid,

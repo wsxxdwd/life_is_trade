@@ -1,19 +1,15 @@
 <?php
-namespace app\controller;
+namespace app\home\controller;
 
 use think\Validate;
-use app\model\News;
-use app\model\Tradeinfo;
-use app\model\Tradeiteminfo;
+use app\home\model\News;
+use app\home\model\Tradeinfo;
+use app\home\model\Tradeiteminfo;
 use common\Strbreaker;
 use think\Db;
 
 class Api
 {
-
-    public function __construct() {
-        
-    }
     
     /**
      * 查看API版本号:)装个逼而已23333
@@ -23,7 +19,7 @@ class Api
     {
         return [
             "owner" => "life_is_trade.com",
-            "version" => "0.01.000"
+            "version" => "0.1.1.0"
         ];
     }
 
@@ -54,6 +50,18 @@ class Api
                 'status' => 0,
                 'msg' => '传入参数错误'
             ];
+        }
+        // 获取IP地址
+        $_POST['createip'] = $_SERVER["REMOTE_ADDR"];
+        // 
+        $nowtime = time();
+        if ($nowtime - (session('time')) <= 60) {
+            return [
+                'status' => 0,
+                'msg' => '操作频繁'
+            ];
+        } else {
+            session('time', $nowtime);
         }
         // 验证交易信息是否符合要求
         $TradeinfoValidate = validate('Tradeinfo');
@@ -184,7 +192,7 @@ class Api
      * @param  string $_POST['content']       内容
      * @return json
      */
-    public function addnew()
+    /*public function addnew()
     {
         // 判断所需参数是否全部存在如果有缺失则结束
         if (!isset($_POST['title']) || !isset($_POST['creatusername']) || !isset($_POST['content'])) {
@@ -214,7 +222,7 @@ class Api
                 'msg' => '新闻发布失败'
             ];
         }
-    }
+    }*/
 
     /**
      * 获取新闻

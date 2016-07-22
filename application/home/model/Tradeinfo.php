@@ -1,9 +1,9 @@
 <?php
-namespace app\model;
+namespace app\home\model;
 
 use think\Model;
 
-class News extends Model
+class Tradeinfo extends Model
 {
     // 开启自动填写时间戳
     protected $autoWriteTimestamp = true;

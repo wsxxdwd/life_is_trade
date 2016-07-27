@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 2016-07-21 04:49:32
+-- Generation Time: 2016-07-27 04:49:54
 -- 服务器版本： 10.1.13-MariaDB
 -- PHP Version: 7.0.6
 
@@ -46,6 +46,8 @@ CREATE TABLE `lit_tradeinfo` (
   `trader` char(30) NOT NULL COMMENT '交易发起者',
   `onlinetime` char(22) NOT NULL COMMENT '在线时间',
   `tradingplace` char(100) NOT NULL COMMENT '交易地点',
+  `toppos` char(8) NOT NULL COMMENT '地图定位top',
+  `leftpos` char(8) NOT NULL COMMENT '地图定位left',
   `tradetype` int(1) UNSIGNED NOT NULL COMMENT '交易类型0：出售1：收购',
   `createip` char(40) NOT NULL COMMENT '发表时的IP',
   `createtime` int(10) UNSIGNED NOT NULL COMMENT '交易创建时间'
@@ -64,6 +66,21 @@ CREATE TABLE `lit_tradeiteminfo` (
   `itemnum` int(5) UNSIGNED NOT NULL COMMENT '物品数量',
   `itemprice` char(40) NOT NULL COMMENT '物品单价',
   `itemquality` int(3) UNSIGNED NOT NULL COMMENT '物品品质'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `lit_user`
+--
+
+CREATE TABLE `lit_user` (
+  `uid` int(10) UNSIGNED NOT NULL COMMENT '用户ID',
+  `username` char(16) NOT NULL COMMENT '用户名，唯一',
+  `password` char(32) NOT NULL COMMENT '用户密码',
+  `salt` char(6) NOT NULL COMMENT '盐值',
+  `createip` char(40) NOT NULL COMMENT '注册IP',
+  `createtime` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -92,6 +109,13 @@ ALTER TABLE `lit_tradeiteminfo`
   ADD KEY `tid` (`tid`,`itemname`);
 
 --
+-- Indexes for table `lit_user`
+--
+ALTER TABLE `lit_user`
+  ADD PRIMARY KEY (`uid`),
+  ADD UNIQUE KEY `username` (`username`);
+
+--
 -- 在导出的表使用AUTO_INCREMENT
 --
 
@@ -110,6 +134,11 @@ ALTER TABLE `lit_tradeinfo`
 --
 ALTER TABLE `lit_tradeiteminfo`
   MODIFY `iid` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '物品id';
+--
+-- 使用表AUTO_INCREMENT `lit_user`
+--
+ALTER TABLE `lit_user`
+  MODIFY `uid` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '用户ID';
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

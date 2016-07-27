@@ -10,7 +10,7 @@ $(document).ready(function() {
                 $.ajax({
                     type: 'post',
                     data: data,
-                    url: '/api/addtradeinfo',
+                    url: '/home/api/addtradeinfo',
                     dataType: 'json',
                     success: function(res) {
                         isPublishing = false;
@@ -137,8 +137,8 @@ $(document).ready(function() {
                 trader: poster,
                 onlinetime: gameTime,
                 tradingplace: tradePos,
-                top: positionTop,
-                left: positionLeft 
+                toppos: positionTop,
+                leftpos: positionLeft 
             }
             return data;
         }

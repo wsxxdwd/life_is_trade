@@ -2,16 +2,32 @@
 // +----------------------------------------------------------------------
 // | ThinkPHP [ WE CAN DO IT JUST THINK ]
 // +----------------------------------------------------------------------
-// | Copyright (c) 2006~2016 http://thinkphp.cn All rights reserved.
+// | Copyright (c) 2006~2015 http://thinkphp.cn All rights reserved.
 // +----------------------------------------------------------------------
 // | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
 // +----------------------------------------------------------------------
-// | Author: liu21st <liu21st@gmail.com>
+// | Author: yunwuxin <448901948@qq.com>
 // +----------------------------------------------------------------------
 
-namespace {%namespace%};
+namespace think\console\output\driver;
 
-class {%className%} {%extend%}
+use think\console\Output;
+
+class Nothing
 {
-{%content%}
+
+    public function __construct(Output $output)
+    {
+        // do nothing
+    }
+
+    public function write($messages, $newline = false, $options = Output::OUTPUT_NORMAL)
+    {
+        // do nothing
+    }
+
+    public function renderException(\Exception $e)
+    {
+        // do nothing
+    }
 }

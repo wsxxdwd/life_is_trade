@@ -13,10 +13,12 @@
 return [
     // 系统错误提示
     'Undefined variable'        => '未定义变量',
-    'Undefined index'           => '未定义索引',
+    'Undefined index'           => '未定义数组索引',
+    'Undefined offset'          => '未定义数组下标',
     'Parse error'               => '语法解析错误',
     'Type error'                => '类型错误',
     'Fatal error'               => '致命错误',
+    'syntax error'              => '语法错误',
 
     // 框架核心错误提示
     'dispatch type not support' => '不支持的调度类型',
@@ -25,6 +27,7 @@ return [
     'module not exists'         => '模块不存在',
     'controller not exists'     => '控制器不存在',
     'class not exists'          => '类不存在',
+    'property not exists'       => '类的属性不存在',
     'template not exists'       => '模板文件不存在',
     'illegal controller name'   => '非法的控制器名称',
     'illegal action name'       => '非法的操作名称',
@@ -57,4 +60,6 @@ return [
     'tag error'                 => '模板标签错误',
     'cache write error'         => '缓存写入失败',
     'sae mc write error'        => 'SAE mc 写入错误',
+    'route name not exists'     => '路由标识不存在（或参数不够）',
+    'invalid request'           => '非法请求',
 ];

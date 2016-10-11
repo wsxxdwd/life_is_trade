@@ -46,6 +46,7 @@ $(document).ready(function() {
     });
 
     $('.map').on('click', function(ev) {
+        console.log(123);
         var top = (ev.offsetY / $(this).height()) * 100 + '%';
         var left = (ev.offsetX / $(this).width()) * 100 + '%';
         $('.pointer').css({
@@ -123,8 +124,8 @@ $(document).ready(function() {
             $('#tradePos').parent().addClass('is-invalid');
             dataError = true;
         }
-        var positionTop =  $('.pointer').css('top');
-        var positionLeft =  $('.pointer').css('left');
+        var positionTop = ((parseInt($('.pointer').css('top')) / $(".map-location").height()) * 100).toFixed(3) + '%';
+        var positionLeft =  ((parseInt($('.pointer').css('left')) / $(".map-location").width()) * 100).toFixed(3) + '%';
         if (dataError) {
             var msg = { message: '请完善信息' };
             snackbarContainer.MaterialSnackbar.showSnackbar(msg);

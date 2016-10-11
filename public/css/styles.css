@@ -352,11 +352,10 @@ input[type="text"] {
 }
 .map-location .pointer {
     position: absolute;
-    left: -50%;
-    top: -50%;
+    left: 0px;
+    top: 0px;
     margin-left: -3.125%;
     margin-top: -6.25%;
-    width: 50px;
     max-width: 6.25%;
 }
 .fixed {

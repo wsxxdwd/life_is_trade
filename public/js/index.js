@@ -66,6 +66,10 @@ $(document).ready(function() {
 
     $('body').on('click', '.location-link', function(e) {
         e.preventDefault();
+        $('.pointer').css({
+            top: $(this).attr('top'),
+            left: $(this).attr('left')
+        });
         $('.map-location').show();
     });
     $('.map-location').click(function() {
@@ -176,7 +180,7 @@ $(document).ready(function() {
                 table,
                 '</tbody>',
                 '</table>',
-                '<h6>交易地点： ', info.tradingplace, '<a class="location-link" href="#">点击查看地图坐标</a></h6>',
+                '<h6>交易地点： ', info.tradingplace, '<a class="location-link" href="#" top="', info.toppos, '" left="' , info.leftpos, '">点击查看地图坐标</a></h6>',
                 '<h6>在线时间： ', info.onlinetime, '</h6>',
                 '</div>',
                 '</div>',

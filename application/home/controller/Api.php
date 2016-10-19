@@ -2,9 +2,9 @@
 namespace app\home\controller;
 
 use think\Validate;
-use app\home\model\News;
-use app\home\model\Tradeinfo;
-use app\home\model\Tradeiteminfo;
+use app\common\model\News;
+use app\common\model\Tradeinfo;
+use app\common\model\Tradeiteminfo;
 use common\Strbreaker;
 use think\Db;
 

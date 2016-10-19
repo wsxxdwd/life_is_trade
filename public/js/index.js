@@ -63,7 +63,7 @@ $(document).ready(function() {
         $('#' + type).html('');
         getInfoList(type)
     });
-
+    // 当点击显示地图时，定位最表并显示地图
     $('body').on('click', '.location-link', function(e) {
         e.preventDefault();
         $('.pointer').css({
@@ -72,6 +72,7 @@ $(document).ready(function() {
         });
         $('.map-location').show();
     });
+    // 关闭地图
     $('.map-location').click(function() {
         $(this).hide();
     })

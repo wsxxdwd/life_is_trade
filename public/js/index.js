@@ -85,7 +85,7 @@ $(document).ready(function() {
             isloading = true;
             $.ajax({
                 type: 'get',
-                url: '/home/api/gettradeinfo',
+                url: '/trade/api/gettradeinfo',
                 data: {
                     type: 0,
                     lastid: lastid,
@@ -109,7 +109,7 @@ $(document).ready(function() {
             isloading = true;
             $.ajax({
                 type: 'get',
-                url: '/home/api/gettradeinfo',
+                url: '/trade/api/gettradeinfo',
                 data: {
                     type: 1,
                     lastid: lastid,
@@ -133,7 +133,7 @@ $(document).ready(function() {
             isloading = true;
             $.ajax({
                 type: 'get',
-                url: '/home/api/getnews',
+                url: '/trade/api/getnews',
                 data: {
                     lastid: lastid,
                     limit: 10
@@ -255,7 +255,7 @@ $(document).ready(function() {
         }
         $.ajax({
             type: 'get',
-            url: '/home/api/search',
+            url: '/trade/api/search',
             data: {
                 wd: wd,
                 lastid: lastid,

@@ -10,7 +10,7 @@ $(document).ready(function() {
                 $.ajax({
                     type: 'post',
                     data: data,
-                    url: '/home/api/addtradeinfo',
+                    url: '/trade/api/addtradeinfo',
                     dataType: 'json',
                     success: function(res) {
                         isPublishing = false;

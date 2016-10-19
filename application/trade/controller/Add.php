@@ -1,5 +1,5 @@
 <?php
-namespace app\home\controller;
+namespace app\trade\controller;
 
 use think\Controller;
 

@@ -1,5 +1,5 @@
 <?php
-namespace app\home\controller;
+namespace app\trade\controller;
 
 use think\Validate;
 use app\common\model\News;
@@ -84,10 +84,11 @@ class Api
             }
         }
         // 过滤post数组中的非数据表字段数据并存入数据库
-        $TradeinfoModel = new Tradeinfo;
-        $tid = $TradeinfoModel->allowField(true)->save($_POST);
+        $TradeinfoModel = new Tradeinfo($_POST);
+        $isin = $TradeinfoModel->allowField(true)->save();
+        $tid =  $TradeinfoModel->tid;
         // 判断是否添加成功
-        if ($tid) {
+        if ($isin) {
             for ($j = 0; $j < $itemnum; $j++) { 
                 $items[$j]['tid'] = $tid;
             }

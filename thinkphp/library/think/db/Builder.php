@@ -89,7 +89,7 @@ abstract class Builder
 
         $result = [];
         foreach ($data as $key => $val) {
-            $item = $this->parseKey($key, $options);
+            $item = $this->parseKey($key);
             if (!in_array($key, $fields, true)) {
                 if ($options['strict']) {
                     throw new Exception('fields not exists:[' . $key . ']');
@@ -115,10 +115,9 @@ abstract class Builder
      * 字段名分析
      * @access protected
      * @param string $key
-     * @param array  $options
      * @return string
      */
-    protected function parseKey($key, $options = [])
+    protected function parseKey($key)
     {
         return $key;
     }
@@ -147,11 +146,10 @@ abstract class Builder
     /**
      * field分析
      * @access protected
-     * @param mixed     $fields
-     * @param array     $options
+     * @param mixed $fields
      * @return string
      */
-    protected function parseField($fields, $options = [])
+    protected function parseField($fields)
     {
         if ('*' == $fields || empty($fields)) {
             $fieldsStr = '*';
@@ -160,9 +158,9 @@ abstract class Builder
             $array = [];
             foreach ($fields as $key => $field) {
                 if (!is_numeric($key)) {
-                    $array[] = $this->parseKey($key, $options) . ' AS ' . $this->parseKey($field, $options);
+                    $array[] = $this->parseKey($key) . ' AS ' . $this->parseKey($field);
                 } else {
-                    $array[] = $this->parseKey($field, $options);
+                    $array[] = $this->parseKey($field);
                 }
             }
             $fieldsStr = implode(',', $array);
@@ -173,27 +171,24 @@ abstract class Builder
     /**
      * table分析
      * @access protected
-     * @param mixed $tables
-     * @param array $options
+     * @param mixed $table
      * @return string
      */
-    protected function parseTable($tables, $options = [])
+    protected function parseTable($tables)
     {
-        $item = [];
-        foreach ((array) $tables as $key => $table) {
-            if (!is_numeric($key)) {
-                $key    = $this->parseSqlTable($key);
-                $item[] = $this->parseKey($key) . ' ' . $this->parseKey($table);
-            } else {
-                $table = $this->parseSqlTable($table);
-                if (isset($options['alias'][$table])) {
-                    $item[] = $this->parseKey($table) . ' ' . $this->parseKey($options['alias'][$table]);
-                } else {
-                    $item[] = $this->parseKey($table);
-                }
+        if (is_array($tables)) {
+            // 支持别名定义
+            foreach ($tables as $table => $alias) {
+                $array[] = !is_numeric($table) ?
+                $this->parseKey($table) . ' ' . $this->parseKey($alias) :
+                $this->parseKey($alias);
             }
+            $tables = $array;
+        } elseif (is_string($tables)) {
+            $tables = $this->parseSqlTable($tables);
+            $tables = array_map([$this, 'parseKey'], explode(',', $tables));
         }
-        return implode(',', $item);
+        return implode(',', $tables);
     }
 
     /**
@@ -268,7 +263,7 @@ abstract class Builder
     protected function parseWhereItem($field, $val, $rule = '', $options = [], $binds = [], $bindName = null)
     {
         // 字段分析
-        $key = $field ? $this->parseKey($field, $options) : '';
+        $key = $field ? $this->parseKey($field) : '';
 
         // 查询规则和条件
         if (!is_array($val)) {
@@ -430,29 +425,14 @@ abstract class Builder
     /**
      * join分析
      * @access protected
-     * @param array $join
-     * @param array $options 查询条件
+     * @param mixed $join
      * @return string
      */
-    protected function parseJoin($join, $options = [])
+    protected function parseJoin($join)
     {
         $joinStr = '';
         if (!empty($join)) {
-            foreach ($join as $item) {
-                list($table, $type, $on) = $item;
-                $condition               = [];
-                foreach ((array) $on as $val) {
-                    if (strpos($val, '=')) {
-                        list($val1, $val2) = explode('=', $val, 2);
-                        $condition[]       = $this->parseKey($val1, $options) . '=' . $this->parseKey($val2, $options);
-                    } else {
-                        $condition[] = $val;
-                    }
-                }
-
-                $table = $this->parseTable($table, $options);
-                $joinStr .= ' ' . $type . ' JOIN ' . $table . ' ON ' . implode(' AND ', $condition);
-            }
+            $joinStr = ' ' . implode(' ', $join) . ' ';
         }
         return $joinStr;
     }
@@ -461,23 +441,22 @@ abstract class Builder
      * order分析
      * @access protected
      * @param mixed $order
-     * @param array $options 查询条件
      * @return string
      */
-    protected function parseOrder($order, $options = [])
+    protected function parseOrder($order)
     {
         if (is_array($order)) {
             $array = [];
             foreach ($order as $key => $val) {
                 if (is_numeric($key)) {
                     if (false === strpos($val, '(')) {
-                        $array[] = $this->parseKey($val, $options);
+                        $array[] = $this->parseKey($val);
                     } elseif ('[rand]' == $val) {
                         $array[] = $this->parseRand();
                     }
                 } else {
                     $sort    = in_array(strtolower(trim($val)), ['asc', 'desc']) ? ' ' . $val : '';
-                    $array[] = $this->parseKey($key, $options) . ' ' . $sort;
+                    $array[] = $this->parseKey($key) . ' ' . $sort;
                 }
             }
             $order = implode(',', $array);
@@ -593,14 +572,14 @@ abstract class Builder
         $sql = str_replace(
             ['%TABLE%', '%DISTINCT%', '%FIELD%', '%JOIN%', '%WHERE%', '%GROUP%', '%HAVING%', '%ORDER%', '%LIMIT%', '%UNION%', '%LOCK%', '%COMMENT%', '%FORCE%'],
             [
-                $this->parseTable($options['table'], $options),
+                $this->parseTable($options['table']),
                 $this->parseDistinct($options['distinct']),
-                $this->parseField($options['field'], $options),
-                $this->parseJoin($options['join'], $options),
+                $this->parseField($options['field']),
+                $this->parseJoin($options['join']),
                 $this->parseWhere($options['where'], $options),
                 $this->parseGroup($options['group']),
                 $this->parseHaving($options['having']),
-                $this->parseOrder($options['order'], $options),
+                $this->parseOrder($options['order']),
                 $this->parseLimit($options['limit']),
                 $this->parseUnion($options['union']),
                 $this->parseLock($options['lock']),
@@ -632,7 +611,7 @@ abstract class Builder
             ['%INSERT%', '%TABLE%', '%FIELD%', '%DATA%', '%COMMENT%'],
             [
                 $replace ? 'REPLACE' : 'INSERT',
-                $this->parseTable($options['table'], $options),
+                $this->parseTable($options['table']),
                 implode(' , ', $fields),
                 implode(' , ', $values),
                 $this->parseComment($options['comment']),
@@ -678,7 +657,7 @@ abstract class Builder
         $sql    = str_replace(
             ['%TABLE%', '%FIELD%', '%DATA%', '%COMMENT%'],
             [
-                $this->parseTable($options['table'], $options),
+                $this->parseTable($options['table']),
                 implode(' , ', $fields),
                 implode(' UNION ALL ', $values),
                 $this->parseComment($options['comment']),
@@ -702,7 +681,7 @@ abstract class Builder
         }
 
         $fields = array_map([$this, 'parseKey'], $fields);
-        $sql    = 'INSERT INTO ' . $this->parseTable($table, $options) . ' (' . implode(',', $fields) . ') ' . $this->select($options);
+        $sql    = 'INSERT INTO ' . $this->parseTable($table) . ' (' . implode(',', $fields) . ') ' . $this->select($options);
         return $sql;
     }
 
@@ -715,7 +694,7 @@ abstract class Builder
      */
     public function update($data, $options)
     {
-        $table = $this->parseTable($options['table'], $options);
+        $table = $this->parseTable($options['table']);
         $data  = $this->parseData($data, $options);
         if (empty($data)) {
             return '';
@@ -727,11 +706,11 @@ abstract class Builder
         $sql = str_replace(
             ['%TABLE%', '%SET%', '%JOIN%', '%WHERE%', '%ORDER%', '%LIMIT%', '%LOCK%', '%COMMENT%'],
             [
-                $this->parseTable($options['table'], $options),
+                $this->parseTable($options['table']),
                 implode(',', $set),
-                $this->parseJoin($options['join'], $options),
+                $this->parseJoin($options['join']),
                 $this->parseWhere($options['where'], $options),
-                $this->parseOrder($options['order'], $options),
+                $this->parseOrder($options['order']),
                 $this->parseLimit($options['limit']),
                 $this->parseLock($options['lock']),
                 $this->parseComment($options['comment']),
@@ -751,11 +730,11 @@ abstract class Builder
         $sql = str_replace(
             ['%TABLE%', '%USING%', '%JOIN%', '%WHERE%', '%ORDER%', '%LIMIT%', '%LOCK%', '%COMMENT%'],
             [
-                $this->parseTable($options['table'], $options),
-                !empty($options['using']) ? ' USING ' . $this->parseTable($options['using'], $options) . ' ' : '',
-                $this->parseJoin($options['join'], $options),
+                $this->parseTable($options['table']),
+                !empty($options['using']) ? ' USING ' . $this->parseTable($options['using']) . ' ' : '',
+                $this->parseJoin($options['join']),
                 $this->parseWhere($options['where'], $options),
-                $this->parseOrder($options['order'], $options),
+                $this->parseOrder($options['order']),
                 $this->parseLimit($options['limit']),
                 $this->parseLock($options['lock']),
                 $this->parseComment($options['comment']),

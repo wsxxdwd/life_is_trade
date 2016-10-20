@@ -12,8 +12,7 @@ trait SoftDelete
      */
     public function trashed()
     {
-        $field = $this->getDeleteTimeField();
-        if (!empty($this->data[$field])) {
+        if (!empty($this->data[static::$deleteTime])) {
             return true;
         }
         return false;
@@ -38,8 +37,7 @@ trait SoftDelete
     public static function onlyTrashed()
     {
         $model = new static();
-        $field = $model->getDeleteTimeField();
-        return $model->db()->where($field, 'exp', 'is not null');
+        return $model->db()->where(static::$deleteTime, 'exp', 'is not null');
     }
 
     /**
@@ -53,9 +51,10 @@ trait SoftDelete
         if (false === $this->trigger('before_delete', $this)) {
             return false;
         }
-        $name = $this->getDeleteTimeField();
-        if (!$force) {
+
+        if (static::$deleteTime && !$force) {
             // 软删除
+            $name              = static::$deleteTime;
             $this->change[]    = $name;
             $this->data[$name] = $this->autoWriteTimestamp($name);
             $result            = $this->isUpdate()->save();
@@ -107,10 +106,12 @@ trait SoftDelete
      */
     public function restore($where = [])
     {
-        $name = $this->getDeleteTimeField();
-        // 恢复删除
-        return $this->isUpdate()->save([$name => null], $where);
-
+        if (static::$deleteTime) {
+            // 恢复删除
+            $name = static::$deleteTime;
+            return $this->isUpdate()->save([$name => null], $where);
+        }
+        return false;
     }
 
     /**
@@ -119,27 +120,11 @@ trait SoftDelete
      * @param \think\db\Query $query 查询对象
      * @return void
      */
-    protected function base($query)
+    protected static function base($query)
     {
-        $field = $this->getDeleteTimeField(true);
-        $query->where($field, 'null');
+        if (static::$deleteTime) {
+            $query->where(static::$deleteTime, 'null');
+        }
     }
 
-    /**
-     * 获取软删除字段
-     * @access public
-     * @param bool  $read 是否查询操作 写操作的时候会自动去掉表别名
-     * @return string
-     */
-    protected function getDeleteTimeField($read = false)
-    {
-        $field = isset($this->deleteTime) ? $this->deleteTime : 'delete_time';
-        if (!strpos($field, '.')) {
-            $field = $this->db(false)->getTable() . '.' . $field;
-        }
-        if (!$read && strpos($field, '.')) {
-            list($alias, $field) = explode('.', $field);
-        }
-        return $field;
-    }
 }

@@ -318,7 +318,11 @@ class Relation
             }
         }
 
-        $result->setAttr($relation, !isset($list[$relation]) ? null : (new $model($list[$relation]))->isUpdate(true));
+        if (!isset($list[$relation])) {
+            // 设置关联模型属性
+            $list[$relation] = [];
+        }
+        $result->setAttr($relation, (new $model($list[$relation]))->isUpdate(true));
     }
 
     /**

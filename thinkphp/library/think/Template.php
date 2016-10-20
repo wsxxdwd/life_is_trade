@@ -959,66 +959,78 @@ class Template
      * @param  array $vars 变量数组
      * @return string
      */
-    public function parseThinkVar($vars)
+    public function parseThinkVar(&$vars)
     {
-        $type  = strtoupper(trim(array_shift($vars)));
-        $param = implode('.', $vars);
-        if ($vars) {
-            switch ($type) {
+        $vars[0]  = strtoupper(trim($vars[0]));
+        $parseStr = '';
+        if (count($vars) >= 2) {
+            $vars[1] = trim($vars[1]);
+            switch ($vars[0]) {
                 case 'SERVER':
-                    $parseStr = '\\think\\Request::instance()->server(\'' . $param . '\')';
+                    $parseStr = '$_SERVER[\'' . strtoupper($vars[1]) . '\']';
                     break;
                 case 'GET':
-                    $parseStr = '\\think\\Request::instance()->get(\'' . $param . '\')';
+                    $parseStr = '$_GET[\'' . $vars[1] . '\']';
                     break;
                 case 'POST':
-                    $parseStr = '\\think\\Request::instance()->post(\'' . $param . '\')';
+                    $parseStr = '$_POST[\'' . $vars[1] . '\']';
                     break;
                 case 'COOKIE':
-                    $parseStr = '\\think\\Cookie::get(\'' . $param . '\')';
+                    if (isset($vars[2])) {
+                        $parseStr = '$_COOKIE[\'' . $vars[1] . '\'][\'' . $vars[2] . '\']';
+                    } else {
+                        $parseStr = '\\think\\Cookie::get(\'' . $vars[1] . '\')';
+                    }
                     break;
                 case 'SESSION':
-                    $parseStr = '\\think\\Session::get(\'' . $param . '\')';
+                    if (isset($vars[2])) {
+                        $parseStr = '$_SESSION[\'' . $vars[1] . '\'][\'' . $vars[2] . '\']';
+                    } else {
+                        $parseStr = '\\think\\Session::get(\'' . $vars[1] . '\')';
+                    }
                     break;
                 case 'ENV':
-                    $parseStr = '\\think\\Request::instance()->env(\'' . $param . '\')';
+                    $parseStr = '$_ENV[\'' . strtoupper($vars[1]) . '\']';
                     break;
                 case 'REQUEST':
-                    $parseStr = '\\think\\Request::instance()->request(\'' . $param . '\')';
+                    $parseStr = '$_REQUEST[\'' . $vars[1] . '\']';
                     break;
                 case 'CONST':
-                    $parseStr = strtoupper($param);
+                    $parseStr = strtoupper($vars[1]);
                     break;
                 case 'LANG':
-                    $parseStr = '\\think\\Lang::get(\'' . $param . '\')';
+                    $parseStr = '\\think\\Lang::get(\'' . $vars[1] . '\')';
                     break;
                 case 'CONFIG':
-                    $parseStr = '\\think\\Config::get(\'' . $param . '\')';
+                    if (isset($vars[2])) {
+                        $vars[1] .= '.' . $vars[2];
+                    }
+                    $parseStr = '\\think\\Config::get(\'' . $vars[1] . '\')';
                     break;
                 default:
                     $parseStr = '\'\'';
                     break;
             }
         } else {
-            switch ($type) {
-                case 'NOW':
-                    $parseStr = "date('Y-m-d g:i a',time())";
-                    break;
-                case 'VERSION':
-                    $parseStr = 'THINK_VERSION';
-                    break;
-                case 'LDELIM':
-                    $parseStr = '\'' . ltrim($this->config['tpl_begin'], '\\') . '\'';
-                    break;
-                case 'RDELIM':
-                    $parseStr = '\'' . ltrim($this->config['tpl_end'], '\\') . '\'';
-                    break;
-                default:
-                    if (defined($type)) {
-                        $parseStr = $type;
-                    } else {
-                        $parseStr = '';
-                    }
+            if (count($vars) == 1) {
+                switch ($vars[0]) {
+                    case 'NOW':
+                        $parseStr = "date('Y-m-d g:i a',time())";
+                        break;
+                    case 'VERSION':
+                        $parseStr = 'THINK_VERSION';
+                        break;
+                    case 'LDELIM':
+                        $parseStr = '\'' . ltrim($this->config['tpl_begin'], '\\') . '\'';
+                        break;
+                    case 'RDELIM':
+                        $parseStr = '\'' . ltrim($this->config['tpl_end'], '\\') . '\'';
+                        break;
+                    default:
+                        if (defined($vars[0])) {
+                            $parseStr = $vars[0];
+                        }
+                }
             }
         }
         return $parseStr;

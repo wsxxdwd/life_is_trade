@@ -403,9 +403,4 @@ class File extends SplFileObject
     {
         return $this->error;
     }
-
-    public function __call($method, $args)
-    {
-        return $this->hash($method);
-    }
 }
